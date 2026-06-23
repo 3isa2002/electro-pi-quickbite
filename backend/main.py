@@ -26,9 +26,15 @@ import os
 
 # Configure CORS for Next.js frontend
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+origins = [
+    frontend_url,
+    "https://electro-pi-quickbite.vercel.app",
+    "http://localhost:3000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_url],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
