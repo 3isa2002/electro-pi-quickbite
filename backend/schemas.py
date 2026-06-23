@@ -11,6 +11,7 @@ class OrderStatusEnum(str, Enum):
     Preparing = "Preparing"
     OutForDelivery = "Out for Delivery"
     Delivered = "Delivered"
+    Cancelled = "Cancelled"
 
 class PaymentMethodEnum(str, Enum):
     Online = "Online"

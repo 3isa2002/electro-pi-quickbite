@@ -1,9 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 import { getToken } from "@/utils/auth";
-import { useRouter } from "@/i18n/routing";
+import { useRouter, usePathname } from "@/i18n/routing";
 import { motion, AnimatePresence } from "framer-motion";
 import OrderDetailsModal from "@/components/admin/OrderDetailsModal";
 
@@ -38,7 +38,15 @@ type Order = {
 export default function AdminDashboard() {
   const t = useTranslations("Admin");
   const router = useRouter();
+  const locale = useLocale();
+  const pathname = usePathname();
+
+  const toggleLanguage = () => {
+    const nextLocale = locale === "en" ? "ar" : "en";
+    router.replace(pathname, { locale: nextLocale });
+  };
   
+
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<Record<number, User>>({});
   const [searchQuery, setSearchQuery] = useState("");
@@ -155,6 +163,15 @@ export default function AdminDashboard() {
           <p className="font-body-md text-body-md text-on-surface-variant">{t("monitorCurrent")}</p>
         </div>
         <div className="flex gap-3">
+          {/* Language Toggle */}
+          <button
+            onClick={toggleLanguage}
+            className="bg-surface-container-lowest border border-outline text-on-surface hover:bg-surface-container-low font-label-md text-label-md px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm"
+            title={locale === "ar" ? "Switch to English" : "التبديل للعربية"}
+          >
+            <span className="material-symbols-outlined text-sm">translate</span>
+            {locale === "ar" ? "EN" : "ع"}
+          </button>
           <button className="bg-surface-container-lowest border border-outline text-on-surface hover:bg-surface-container-low font-label-md text-label-md px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
             <span className="material-symbols-outlined text-sm">filter_list</span>
             {t("filter")}
@@ -322,64 +339,58 @@ export default function AdminDashboard() {
         onStatusChange={handleStatusChange}
       />
 
-      {/* Driver Selection Modal - Fully Responsive */}
+      {/* Driver Selection Modal - Wide & Centered */}
       {driverModal.isOpen && (
         <div 
-          className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-on-background/50 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-on-background/50 backdrop-blur-sm"
           onClick={() => setDriverModal({ isOpen: false, orderId: null })}
         >
           <div 
-            className="bg-surface-container-lowest w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl border border-outline-variant overflow-hidden"
+            className="bg-surface-container-lowest w-full max-w-lg rounded-2xl shadow-2xl border border-outline-variant overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 border-b border-outline-variant/50 bg-surface">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/50 bg-surface">
               <div>
-                <h2 className="font-title-lg text-title-lg text-on-surface">اختر سائق التوصيل</h2>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-                  طلب رقم #{driverModal.orderId}
+                <h2 className="font-headline-sm text-headline-sm text-on-surface">اختر سائق التوصيل</h2>
+                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  طلب رقم <span className="text-primary font-bold">#{driverModal.orderId}</span>
                 </p>
               </div>
               <button
                 onClick={() => setDriverModal({ isOpen: false, orderId: null })}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors"
               >
-                <span className="material-symbols-outlined text-[20px]">close</span>
+                <span className="material-symbols-outlined">close</span>
               </button>
             </div>
 
-            {/* Drivers List */}
-            <div className="p-4 flex flex-col gap-2 max-h-[60vh] overflow-y-auto">
+            {/* Drivers Grid */}
+            <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
               {MOCK_DRIVERS.map((driver, idx) => (
                 <button
                   key={idx}
                   onClick={() => assignDriver(driver)}
-                  className="flex items-center gap-4 p-4 rounded-xl border border-outline-variant/40 hover:bg-primary/5 hover:border-primary/30 active:scale-[0.98] transition-all duration-150 text-start w-full group"
+                  className="flex items-center gap-4 p-5 rounded-xl border-2 border-outline-variant/40 hover:border-primary/40 hover:bg-primary/5 active:scale-[0.97] transition-all duration-150 text-start w-full group"
                 >
                   {/* Avatar */}
-                  <div className="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
-                    <span className="material-symbols-outlined text-[22px]">two_wheeler</span>
+                  <div className="w-14 h-14 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                    <span className="material-symbols-outlined text-[26px]">two_wheeler</span>
                   </div>
-
                   {/* Info */}
                   <div className="flex-1 min-w-0">
                     <p className="font-title-md text-title-md text-on-surface">{driver.name}</p>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant" dir="ltr">{driver.phone}</p>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5" dir="ltr">{driver.phone}</p>
                   </div>
-
-                  {/* Arrow */}
-                  <span className="material-symbols-outlined text-primary rtl:rotate-180 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                    chevron_right
-                  </span>
                 </button>
               ))}
             </div>
 
             {/* Footer */}
-            <div className="p-4 border-t border-outline-variant/50 bg-surface">
+            <div className="px-5 pb-5">
               <button
                 onClick={() => setDriverModal({ isOpen: false, orderId: null })}
-                className="w-full py-3 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-container-low active:scale-[0.98] transition-all font-label-lg text-label-md"
+                className="w-full py-3 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-container-low active:scale-[0.98] transition-all font-label-md text-label-md"
               >
                 إلغاء
               </button>

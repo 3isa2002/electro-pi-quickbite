@@ -13,6 +13,9 @@ export default function Checkout() {
   const { items, subtotal, clearCart } = useCart();
   
   const [user, setUser] = useState<any>(null);
+  const [activeOrder, setActiveOrder] = useState<any>(null);
+  const [checkingOrder, setCheckingOrder] = useState(true);
+  const [cancelling, setCancelling] = useState(false);
   const [useDifferentAddress, setUseDifferentAddress] = useState(false);
   const [customAddress, setCustomAddress] = useState("");
   const [customPhone, setCustomPhone] = useState("");
@@ -26,21 +29,56 @@ export default function Checkout() {
         return;
       }
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/auth/me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (res.ok) {
-          const data = await res.json();
+        const [userRes, ordersRes] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/auth/me`, {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/orders/my-orders`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        ]);
+        if (userRes.ok) {
+          const data = await userRes.json();
           setUser(data);
         } else {
           router.push("/login?redirect=/checkout");
+          return;
+        }
+        if (ordersRes.ok) {
+          const orders = await ordersRes.json();
+          // Find any active (non-delivered) order
+          const active = orders.find((o: any) => o.status !== 'Delivered');
+          setActiveOrder(active || null);
         }
       } catch (err) {
         console.error(err);
+      } finally {
+        setCheckingOrder(false);
       }
     };
     fetchUser();
   }, [router]);
+
+  const handleCancelOrder = async () => {
+    if (!activeOrder || activeOrder.status !== 'Pending') return;
+    const token = getToken();
+    setCancelling(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/orders/${activeOrder.id}/cancel`, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        setActiveOrder(null);
+      } else {
+        alert("لا يمكن إلغاء هذا الطلب.");
+      }
+    } catch {
+      alert("حدث خطأ أثناء الإلغاء.");
+    } finally {
+      setCancelling(false);
+    }
+  };
 
   const handlePlaceOrder = async () => {
     const token = getToken();
@@ -80,7 +118,70 @@ export default function Checkout() {
     }
   };
 
-  if (!user) return <div className="p-xl text-center">Loading...</div>;
+  if (!user || checkingOrder) return <div className="p-xl text-center">جاري التحميل...</div>;
+
+  // Block checkout if active order exists
+  if (activeOrder) {
+    return (
+      <>
+        <TopNavBar variant="checkout" />
+        <main className="flex-grow w-full max-w-2xl mx-auto px-margin-mobile md:px-margin-desktop py-xl text-center">
+          <div className="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant p-8">
+            <span className="material-symbols-outlined text-[64px] text-primary block mb-4">receipt_long</span>
+            <h1 className="font-headline-md text-headline-md text-on-surface mb-2">لديك طلب جاري بالفعل!</h1>
+            <p className="font-body-md text-body-md text-on-surface-variant mb-6">
+              لا يمكنك تقديم طلب جديد حتى يتم توصيل طلبك الحالي.
+            </p>
+
+            {/* Active Order Card */}
+            <div className="bg-surface-container-low rounded-xl p-5 text-start mb-6 border border-outline-variant/50">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-title-md text-title-md text-on-surface">طلب #{activeOrder.id.toString().padStart(4,'0')}</span>
+                <span className={`px-3 py-1 rounded-full font-label-sm text-label-sm ${
+                  activeOrder.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
+                  activeOrder.status === 'Preparing' ? 'bg-blue-100 text-blue-800' :
+                  'bg-orange-100 text-orange-800'
+                }`}>
+                  {activeOrder.status === 'Pending' ? 'قيد الانتظار' :
+                   activeOrder.status === 'Preparing' ? 'قيد التحضير' : 'في الطريق'}
+                </span>
+              </div>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">
+                الإجمالي: <span className="font-bold text-primary">ج.م {activeOrder.total_amount?.toFixed(2)}</span>
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                onClick={() => router.push("/track-order")}
+                className="flex-1 bg-primary text-on-primary py-3 rounded-xl font-label-md flex items-center justify-center gap-2 hover:bg-[#7a4100] transition-colors"
+              >
+                <span className="material-symbols-outlined text-[20px]">location_on</span>
+                تتبع طلبك
+              </button>
+
+              {activeOrder.status === 'Pending' && (
+                <button
+                  onClick={handleCancelOrder}
+                  disabled={cancelling}
+                  className="flex-1 border-2 border-error text-error py-3 rounded-xl font-label-md flex items-center justify-center gap-2 hover:bg-error/5 transition-colors disabled:opacity-50"
+                >
+                  <span className="material-symbols-outlined text-[20px]">cancel</span>
+                  {cancelling ? 'جاري الإلغاء...' : 'إلغاء الطلب'}
+                </button>
+              )}
+            </div>
+
+            {activeOrder.status !== 'Pending' && (
+              <p className="text-on-surface-variant font-body-sm text-body-sm mt-4">
+                لا يمكن إلغاء الطلب لأنه دخل مرحلة التحضير أو التوصيل.
+              </p>
+            )}
+          </div>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>

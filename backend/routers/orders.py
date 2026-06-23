@@ -67,6 +67,24 @@ def get_order(
         raise HTTPException(status_code=403, detail="Not authorized to view this order")
     return order
 
+@router.put("/{order_id}/cancel", response_model=schemas.OrderResponse)
+def cancel_order(
+    order_id: int,
+    db: Session = Depends(get_db),
+    user: models.User = Depends(get_current_user)
+):
+    order = db.query(models.Order).filter(models.Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    if order.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    if order.status != "Pending":
+        raise HTTPException(status_code=400, detail="Cannot cancel order that is already being prepared or delivered")
+    order.status = "Cancelled"
+    db.commit()
+    db.refresh(order)
+    return order
+
 @admin_router.get("/", response_model=List[schemas.OrderResponse])
 def get_all_orders(
     db: Session = Depends(get_db), 

@@ -29,8 +29,9 @@ export default function CartDrawer() {
           onClick={toggleCart}
         />
       )}
-      <aside className={`fixed right-0 rtl:right-auto rtl:left-0 top-0 h-screen w-[320px] max-w-[100vw] bg-surface-container-lowest shadow-2xl z-[70] md:z-40 border-l rtl:border-l-0 rtl:border-r border-outline-variant flex flex-col pt-0 md:pt-[72px] transform transition-transform duration-300 ${isCartOpen ? "translate-x-0" : "translate-x-full rtl:-translate-x-full"}`}>
-        <div className="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+      <aside className={`fixed right-0 rtl:right-auto rtl:left-0 top-0 h-[100dvh] w-[320px] max-w-[100vw] bg-surface-container-lowest shadow-2xl z-[70] md:z-40 border-l rtl:border-l-0 rtl:border-r border-outline-variant flex flex-col pt-0 md:pt-[72px] transform transition-transform duration-300 ${isCartOpen ? "translate-x-0" : "translate-x-full rtl:-translate-x-full"}`}>
+        {/* Header */}
+        <div className="p-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low shrink-0">
           <h2 className="font-title-md text-title-md text-on-background flex items-center gap-xs">
             <span className="material-symbols-outlined">shopping_bag</span>
             {t("title")}
@@ -47,7 +48,9 @@ export default function CartDrawer() {
             </button>
           </div>
         </div>
-        <div className="flex-grow overflow-y-auto p-md flex flex-col gap-md">
+
+        {/* Items - scrollable */}
+        <div className="flex-1 overflow-y-auto p-md flex flex-col gap-md min-h-0">
           {items.map((item) => (
             <div key={item.id} className="flex gap-sm items-center border-b border-outline-variant pb-sm">
               <div 
@@ -77,7 +80,9 @@ export default function CartDrawer() {
             </div>
           ))}
         </div>
-        <div className="p-md bg-surface-container-low border-t border-outline-variant">
+
+        {/* Footer - always visible at bottom */}
+        <div className="p-md bg-surface-container-low border-t border-outline-variant shrink-0 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex justify-between items-center mb-sm">
             <span className="font-body-md text-body-md text-on-surface-variant">{t("subtotal")}</span>
             <span className="font-title-md text-title-md text-on-background font-bold">EGP {subtotal}</span>
