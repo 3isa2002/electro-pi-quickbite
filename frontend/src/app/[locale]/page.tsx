@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import TopNavBar from "@/components/layout/TopNavBar";
 import BottomNavBar from "@/components/layout/BottomNavBar";
-import CartDrawer from "@/components/cart/CartDrawer";
 import ProductCard, { BackendProduct } from "@/components/product/ProductCard";
 import { useCart } from "@/context/CartContext";
 import HeroCarousel from "@/components/home/HeroCarousel";
@@ -234,8 +233,6 @@ export default function Home() {
           )}
         </section>
       </main>
-      
-      <CartDrawer />
       <BottomNavBar />
     </>
   );

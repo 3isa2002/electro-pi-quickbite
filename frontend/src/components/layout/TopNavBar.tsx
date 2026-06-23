@@ -7,6 +7,7 @@ import { Link } from "@/i18n/routing";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useState, useRef, useEffect } from "react";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 export default function TopNavBar({ variant = "default", onMenuClick }: { variant?: "default" | "checkout" | "track-order" | "admin", onMenuClick?: () => void }) {
   const { user, logout } = useAuth();
@@ -69,79 +70,82 @@ export default function TopNavBar({ variant = "default", onMenuClick }: { varian
   }
 
   return (
-    <header className="shadow-sm bg-surface dark:bg-on-background docked full-width top-0 sticky flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 z-50">
-      <div className="flex items-center gap-xl">
-        <Link href="/" className="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">
-          {t("brand")}
-        </Link>
-        <nav className="hidden md:flex gap-lg">
-          <Link href="/" className={`${pathname === '/' ? 'text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary pb-1' : 'text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 rounded'}`}>
-            {t("menu")}
+    <>
+      <header className="shadow-sm bg-surface dark:bg-on-background docked full-width top-0 sticky flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 z-50">
+        <div className="flex items-center gap-xl">
+          <Link href="/" className="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">
+            {t("brand")}
           </Link>
-          <Link href="/track-order" className={`${pathname === '/track-order' ? 'text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary pb-1' : 'text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 rounded'}`}>
-            {t("trackOrder")}
-          </Link>
-        </nav>
-      </div>
-      <div className="flex items-center gap-md">
-        <button onClick={toggleLanguage} className="font-label-md text-label-md text-on-surface-variant hover:text-primary px-2 transition-colors">
-          {locale === "en" ? "AR" : "EN"}
-        </button>
-        <div onClick={toggleCart} className="relative scale-95 active:scale-90 transition-transform duration-150 cursor-pointer">
-          <span className="material-symbols-outlined text-[24px] text-on-surface">shopping_cart</span>
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 rtl:right-auto rtl:-left-1 bg-secondary text-on-secondary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
+          <nav className="hidden md:flex gap-lg">
+            <Link href="/" className={`${pathname === '/' ? 'text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary pb-1' : 'text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 rounded'}`}>
+              {t("menu")}
+            </Link>
+            <Link href="/track-order" className={`${pathname === '/track-order' ? 'text-secondary dark:text-secondary-fixed-dim font-bold border-b-2 border-secondary pb-1' : 'text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-surface-container-highest px-2 py-1 rounded'}`}>
+              {t("trackOrder")}
+            </Link>
+          </nav>
         </div>
-        <div className="relative" ref={dropdownRef}>
-          <button 
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="scale-95 active:scale-90 transition-transform duration-150 text-on-surface flex items-center"
-          >
-            <span className="material-symbols-outlined text-[24px]">account_circle</span>
+        <div className="flex items-center gap-md">
+          <button onClick={toggleLanguage} className="font-label-md text-label-md text-on-surface-variant hover:text-primary px-2 transition-colors">
+            {locale === "en" ? "AR" : "EN"}
           </button>
-          
-          {isDropdownOpen && (
-            <div className="absolute right-0 rtl:right-auto rtl:left-0 top-full mt-2 w-48 bg-surface-container-lowest shadow-lg rounded-xl py-2 border border-outline-variant/30 z-50">
-              {user ? (
-                <>
-                  <div className="px-4 py-2 border-b border-outline-variant/30">
-                    <p className="font-label-md text-label-md font-bold text-on-surface truncate">{user.name}</p>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant truncate">{user.email}</p>
-                  </div>
-                  {user.role === 'admin' && (
-                    <Link href="/admin" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
-                      <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
-                      {t("adminDashboard")}
+          <div onClick={toggleCart} className="relative scale-95 active:scale-90 transition-transform duration-150 cursor-pointer">
+            <span className="material-symbols-outlined text-[24px] text-on-surface">shopping_cart</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 rtl:right-auto rtl:-left-1 bg-secondary text-on-secondary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </div>
+          <div className="relative" ref={dropdownRef}>
+            <button 
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="scale-95 active:scale-90 transition-transform duration-150 text-on-surface flex items-center"
+            >
+              <span className="material-symbols-outlined text-[24px]">account_circle</span>
+            </button>
+            
+            {isDropdownOpen && (
+              <div className="absolute right-0 rtl:right-auto rtl:left-0 top-full mt-2 w-48 bg-surface-container-lowest shadow-lg rounded-xl py-2 border border-outline-variant/30 z-50">
+                {user ? (
+                  <>
+                    <div className="px-4 py-2 border-b border-outline-variant/30">
+                      <p className="font-label-md text-label-md font-bold text-on-surface truncate">{user.name}</p>
+                      <p className="font-body-sm text-body-sm text-on-surface-variant truncate">{user.email}</p>
+                    </div>
+                    {user.role === 'admin' && (
+                      <Link href="/admin" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+                        <span className="material-symbols-outlined text-sm">admin_panel_settings</span>
+                        {t("adminDashboard")}
+                      </Link>
+                    )}
+                    <Link href="/profile" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+                      <span className="material-symbols-outlined text-sm">person</span>
+                      {t("profile")}
                     </Link>
-                  )}
-                  <Link href="/profile" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
-                    <span className="material-symbols-outlined text-sm">person</span>
-                    {t("profile")}
-                  </Link>
-                  <button onClick={() => { logout(); setIsDropdownOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2 text-error hover:bg-error-container/10 transition-colors font-label-md text-label-md text-left rtl:text-right">
-                    <span className="material-symbols-outlined text-sm">logout</span>
-                    {t("logout")}
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link href="/login" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
-                    <span className="material-symbols-outlined text-sm">login</span>
-                    {t("signIn")}
-                  </Link>
-                  <Link href="/register" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
-                    <span className="material-symbols-outlined text-sm">person_add</span>
-                    {t("createAccount")}
-                  </Link>
-                </>
-              )}
-            </div>
-          )}
+                    <button onClick={() => { logout(); setIsDropdownOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2 text-error hover:bg-error-container/10 transition-colors font-label-md text-label-md text-left rtl:text-right">
+                      <span className="material-symbols-outlined text-sm">logout</span>
+                      {t("logout")}
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+                      <span className="material-symbols-outlined text-sm">login</span>
+                      {t("signIn")}
+                    </Link>
+                    <Link href="/register" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+                      <span className="material-symbols-outlined text-sm">person_add</span>
+                      {t("createAccount")}
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+      <CartDrawer />
+    </>
   );
 }
