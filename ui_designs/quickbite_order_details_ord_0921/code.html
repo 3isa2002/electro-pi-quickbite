@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QuickBite Admin - Order Details</title>
+<!-- Google Fonts: Plus Jakarta Sans & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration (Design System) -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#85cfff",
+                    "tertiary-container": "#00b5fc",
+                    "on-background": "#241912",
+                    "inverse-surface": "#3a2e25",
+                    "on-primary-fixed": "#2f1500",
+                    "surface-tint": "#904d00",
+                    "secondary": "#b7102a",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#ffdad8",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container": "#ffeadd",
+                    "on-primary-fixed-variant": "#6e3900",
+                    "surface-variant": "#f3dfd1",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#fff8f5",
+                    "on-secondary-fixed": "#410007",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#db313f",
+                    "on-tertiary-container": "#004360",
+                    "on-primary-container": "#623200",
+                    "surface-dim": "#ead6c9",
+                    "primary-fixed-dim": "#ffb77d",
+                    "outline": "#897362",
+                    "on-surface-variant": "#564334",
+                    "secondary-fixed-dim": "#ffb3b1",
+                    "background": "#fff8f5",
+                    "surface-container-high": "#f9e4d7",
+                    "on-surface": "#241912",
+                    "on-tertiary-fixed": "#001e2e",
+                    "primary-container": "#ff8c00",
+                    "tertiary-fixed": "#c7e7ff",
+                    "on-secondary": "#ffffff",
+                    "primary": "#904d00",
+                    "on-tertiary-fixed-variant": "#004c6c",
+                    "surface-container-low": "#fff1e9",
+                    "primary-fixed": "#ffdcc3",
+                    "inverse-on-surface": "#ffede3",
+                    "surface": "#fff8f5",
+                    "on-error": "#ffffff",
+                    "inverse-primary": "#ffb77d",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#f3dfd1",
+                    "on-secondary-fixed-variant": "#92001c",
+                    "tertiary": "#00658f",
+                    "outline-variant": "#ddc1ae"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "xl": "32px",
+                    "lg": "24px",
+                    "margin-desktop": "48px",
+                    "base": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "title-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md h-screen w-full overflow-hidden flex">
+<!-- SideNavBar (Shared Component Blueprint) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant shadow-md z-40">
+<!-- Header -->
+<div class="p-6 flex flex-col items-center border-b border-outline-variant/30">
+<img alt="Admin Avatar" class="w-16 h-16 rounded-full object-cover shadow-sm mb-4" data-alt="A professional close-up portrait of an administrator in a brightly lit, modern office environment. The person is smiling slightly, representing approachability and reliability, adhering to the QuickBite warm corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMnq0tdmHJxeEs5xQfVP1a7U_XC9ZHj35bRYoqBJ_CQ3Uu53nu3mK3PBw8r3OJ_4kZgKCsC3dPh2WCkZaGIDipacClakADJXKMBgau5ILNmeRF4BCJ0sqR9k4sW1hEyGnsE_Aq6MRY-j8PB8okUWvzryuZXwCwjXEynEEq0j5tVh-xYxElqMXf2gLrjOBsjIAfRVXzdeDXwIK_Bwk-mCHeMVY0lTvqzOfekv4xOL8lmS9_SRs57cNJao5qW43brCzcNv6aeYfI1TE"/>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface text-center leading-tight">Admin Panel</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">QuickBite Management</p>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 overflow-y-auto py-4 flex flex-col gap-2">
+<!-- Inactive -->
+<a class="text-on-surface-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<!-- Active (Orders - based on context) -->
+<a class="bg-primary-container text-on-primary-container rounded-lg font-bold flex items-center px-4 py-3 mx-2 translate-x-1 duration-200 shadow-sm" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform">restaurant_menu</span>
+<span class="font-label-md text-label-md">Menu Management</span>
+</a>
+<!-- Inactive -->
+<a class="text-on-surface-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:text-primary transition-all duration-200 rounded-lg group" href="#">
+<span class="material-symbols-outlined mr-3 group-hover:scale-110 transition-transform">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+</nav>
+<!-- CTA -->
+<div class="p-4 mx-2 mt-auto">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg shadow-sm hover:bg-surface-tint transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> Add New Product
+            </button>
+</div>
+<!-- Footer -->
+<div class="border-t border-outline-variant/30 py-4 flex flex-col gap-1">
+<a class="text-on-surface-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area (Background context - blurred) -->
+<main class="flex-1 ml-0 md:ml-64 relative bg-surface-container-lowest h-full w-full overflow-hidden">
+<!-- Dummy Dashboard Background (To give overlay context) -->
+<div class="p-8 h-full w-full filter blur-sm opacity-50 select-none pointer-events-none">
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-8">Active Orders</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface rounded-xl shadow-sm h-32 border border-outline-variant/50"></div>
+<div class="bg-surface rounded-xl shadow-sm h-32 border border-outline-variant/50"></div>
+<div class="bg-surface rounded-xl shadow-sm h-32 border border-outline-variant/50"></div>
+</div>
+<div class="mt-8 bg-surface rounded-xl shadow-sm h-96 border border-outline-variant/50"></div>
+</div>
+<!-- OVERLAY BACKDROP -->
+<div class="absolute inset-0 bg-on-background/40 backdrop-blur-[2px] z-40 transition-opacity"></div>
+<!-- SLIDE-OVER MODAL (Order Details) -->
+<section class="absolute top-0 right-0 h-full w-full max-w-xl bg-surface shadow-[rgba(255,140,0,0.05)_0px_20px_40px_0px] z-50 flex flex-col transform transition-transform duration-300 translate-x-0 border-l border-outline-variant/30">
+<!-- Modal Header -->
+<header class="flex items-center justify-between px-8 py-6 border-b border-outline-variant/30 bg-surface">
+<div>
+<h2 class="font-title-md text-title-md text-on-surface font-bold flex items-center gap-2">
+                        Order #ORD-0921
+                        <span class="bg-primary-container text-on-primary-container text-[10px] font-bold px-2 py-1 rounded-full ml-2 uppercase tracking-wider">New</span>
+</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Oct 24, 2023 • 14:30
+                    </p>
+</div>
+<button aria-label="Close" class="p-2 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">close</span>
+</button>
+</header>
+<!-- Modal Body (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-8 py-6 space-y-8">
+<!-- Status & Meta -->
+<div class="flex flex-wrap gap-4 items-center justify-between bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/50 shadow-sm">
+<div class="flex-1 min-w-[200px]">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Order Status</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface border border-outline-variant text-on-surface font-label-md text-label-md rounded-lg pl-4 pr-10 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow shadow-sm">
+<option value="pending">Pending</option>
+<option selected="" value="preparing">Preparing Food</option>
+<option value="ready">Ready for Pickup</option>
+<option value="delivering">Out for Delivery</option>
+<option value="completed">Completed</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Payment Method</label>
+<div class="flex items-center gap-2 text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-primary">credit_card</span>
+                            Online Paid
+                        </div>
+</div>
+</div>
+<!-- Customer Details -->
+<section>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-3">Customer Information</h3>
+<div class="bg-surface-container-low rounded-xl p-5 border border-outline-variant/30 flex items-start gap-4 shadow-sm">
+<div class="bg-primary-container text-on-primary-container p-3 rounded-full flex-shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div class="flex-1">
+<h4 class="font-title-md text-title-md text-on-surface mb-1">Ahmed Hassan</h4>
+<div class="flex items-center gap-2 text-on-surface-variant font-body-md text-body-md mb-2">
+<span class="material-symbols-outlined text-[18px]">call</span>
+<a class="hover:text-primary transition-colors" href="tel:+201234567890">+20 123 456 7890</a>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant font-body-md text-body-md">
+<span class="material-symbols-outlined text-[18px] mt-0.5">location_on</span>
+<span>12 Maadi St, Floor 4, Apt 12<br/>Cairo, Egypt</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Itemized List -->
+<section>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-3">Order Items</h3>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/50 overflow-hidden shadow-sm">
+<ul class="divide-y divide-outline-variant/30">
+<!-- Item 1 -->
+<li class="p-4 flex items-center gap-4 hover:bg-surface-container-lowest transition-colors">
+<img alt="Classic Double Burger" class="w-16 h-16 rounded-lg object-cover shadow-sm" data-alt="A mouth-watering close-up of a classic double beef burger with melted cheese, fresh lettuce, and tomatoes, served on a toasted brioche bun. The lighting is warm and bright, highlighting the juicy textures of the food against a clean, minimal white background to evoke a sense of premium quality and hunger." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1cBkbZE63PVMFubm6Vh5yY8P4w-SRi6fpEntnWtiMSWgPQm4gqsjuV-LNsZGhjOOFtPAdb-iLxSQvn63TCCwM6j3U-cDn80YL7g9hVTkcsfNI9ifGEYu7Ho5Ll6h8odP4Kb6b44ymoVeA6KdUPCXwK5P28sEWf52bKMkaLXI4ESzcCt0ROLPkbixLEPsGLbur-hezys_xfGdCn1SGQhYvf5LT9TqUBO5pqqW5nv-JQTtU5Z9gzdJU2rNCMdzu3MoKViTrLLmF3Hw"/>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Classic Double Burger</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">No onions, extra sauce</p>
+</div>
+<div class="text-right">
+<div class="font-label-md text-label-md text-on-surface">2x</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">150.00 EGP</div>
+</div>
+<div class="w-20 text-right font-title-md text-title-md text-on-surface">
+                                    300.00
+                                </div>
+</li>
+<!-- Item 2 -->
+<li class="p-4 flex items-center gap-4 hover:bg-surface-container-lowest transition-colors">
+<img alt="Crispy Chicken Meal" class="w-16 h-16 rounded-lg object-cover shadow-sm" data-alt="A delicious piece of crispy golden-brown fried chicken served as a meal portion. The image is brightly lit with a warm tone, emphasizing the crunchy texture of the batter. Set against a clean, modern aesthetic background suitable for a high-end food delivery application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMfv5HBWgC6U1xgpKMhF4Iq9GOtTAdj0xpXHR3GGyVRvH57c84so3yTwBdAnK41P0l8WAJgKYHHrVLOarJ5vo9-YnmyJN1f2lfHUi7zi34ALFDJW_dODFjqbactiFMmwQh5vTmrAG3SKyiRjwl8iwvwq2nRi951b4MNnLxwVofazib_IIrn66WMGrS8XvLHjmxFIA3orBtFpoZG-_VIGNN-Gf4XUtt2mcXdKprkNwbokMOhtesWl29z9Qww8OqPEiY6RYG49eeIIc"/>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md text-on-surface">Crispy Chicken Meal</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5">Spicy variant</p>
+</div>
+<div class="text-right">
+<div class="font-label-md text-label-md text-on-surface">1x</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">125.00 EGP</div>
+</div>
+<div class="w-20 text-right font-title-md text-title-md text-on-surface">
+                                    125.00
+                                </div>
+</li>
+</ul>
+</div>
+</section>
+<!-- Financial Breakdown -->
+<section class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/30 shadow-sm">
+<div class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+<div class="flex justify-between items-center">
+<span>Subtotal</span>
+<span class="text-on-surface font-label-md text-label-md">425.00 EGP</span>
+</div>
+<div class="flex justify-between items-center">
+<span>Delivery Fee</span>
+<span class="text-on-surface font-label-md text-label-md">25.00 EGP</span>
+</div>
+<div class="flex justify-between items-center text-primary">
+<span>Discount</span>
+<span class="font-label-md text-label-md">-0.00 EGP</span>
+</div>
+</div>
+<div class="border-t border-outline-variant/50 mt-4 pt-4 flex justify-between items-center">
+<span class="font-title-md text-title-md text-on-surface font-bold">Total Amount</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary font-bold">450.00 <span class="font-title-md text-title-md">EGP</span></span>
+</div>
+</section>
+</div>
+<!-- Modal Footer / Actions -->
+<footer class="p-6 border-t border-outline-variant/30 bg-surface flex items-center justify-between gap-4">
+<button class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface px-4 py-2 rounded-lg transition-colors">
+                    Close
+                </button>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 font-label-md text-label-md text-secondary border border-outline-variant px-5 py-2.5 rounded-lg hover:bg-surface-container-high transition-colors shadow-sm bg-surface">
+<span class="material-symbols-outlined text-[18px]">print</span>
+                        Print Invoice
+                    </button>
+<button class="flex items-center gap-2 font-label-md text-label-md text-on-primary bg-primary px-6 py-2.5 rounded-lg hover:bg-surface-tint shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">call</span>
+                        Contact Customer
+                    </button>
+</div>
+</footer>
+</section>
+</main>
+</body></html>

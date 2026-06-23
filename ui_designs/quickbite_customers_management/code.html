@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QuickBite Admin - Customers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#2f1500",
+                        "surface-container-low": "#fff1e9",
+                        "on-tertiary-fixed-variant": "#004c6c",
+                        "on-secondary-fixed": "#410007",
+                        "surface-container-high": "#f9e4d7",
+                        "on-tertiary-fixed": "#001e2e",
+                        "on-secondary-fixed-variant": "#92001c",
+                        "surface-tint": "#904d00",
+                        "outline": "#897362",
+                        "on-tertiary-container": "#004360",
+                        "surface-variant": "#f3dfd1",
+                        "on-tertiary": "#ffffff",
+                        "background": "#fff8f5",
+                        "on-secondary-container": "#fffbff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "secondary-container": "#db313f",
+                        "on-surface-variant": "#564334",
+                        "surface-dim": "#ead6c9",
+                        "error-container": "#ffdad6",
+                        "primary": "#904d00",
+                        "surface-container-highest": "#f3dfd1",
+                        "primary-fixed": "#ffdcc3",
+                        "on-surface": "#241912",
+                        "tertiary-fixed": "#c7e7ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fff8f5",
+                        "secondary-fixed-dim": "#ffb3b1",
+                        "primary-container": "#ff8c00",
+                        "outline-variant": "#ddc1ae",
+                        "primary-fixed-dim": "#ffb77d",
+                        "on-primary-container": "#623200",
+                        "inverse-primary": "#ffb77d",
+                        "inverse-surface": "#3a2e25",
+                        "tertiary-fixed-dim": "#85cfff",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container": "#ffeadd",
+                        "on-background": "#241912",
+                        "inverse-on-surface": "#ffede3",
+                        "surface-bright": "#fff8f5",
+                        "secondary": "#b7102a",
+                        "secondary-fixed": "#ffdad8",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#00658f",
+                        "tertiary-container": "#00b5fc",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "md": "16px",
+                        "margin-desktop": "48px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "title-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col md:flex-row">
+<!-- TopNavBar (Mobile) -->
+<header class="md:hidden flex justify-between items-center w-full px-margin-mobile py-4 z-50 bg-surface dark:bg-on-background shadow-sm sticky top-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">QuickBite</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">search</span>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex h-screen w-64 fixed left-0 top-0 flex-col h-full border-r border-outline-variant dark:border-outline bg-surface-container-low dark:bg-inverse-surface shadow-md z-40">
+<div class="p-6">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface">Admin Panel</h1>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">QuickBite Management</p>
+</div>
+<div class="flex-1 px-2 py-4 space-y-2">
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">receipt_long</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">restaurant_menu</span>
+<span class="font-label-md text-label-md">Menu Management</span>
+</a>
+<a class="bg-primary-container text-on-primary-container rounded-lg font-bold flex items-center px-4 py-3 mx-2 translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+</div>
+<div class="p-4 px-2 space-y-2 border-t border-outline-variant">
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined mr-3">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+<div class="p-4">
+<button class="w-full bg-primary hover:bg-[#824500] text-on-primary font-label-md text-label-md py-3 rounded-full transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                Add New Product
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background pb-24 md:pb-margin-desktop">
+<!-- Header & Search -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg md:font-headline-xl md:text-headline-xl text-on-surface">Customers</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Manage registered users and viewing their order history.</p>
+</div>
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-3 bg-surface border border-outline-variant rounded-full focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-surface placeholder:text-outline transition-colors" placeholder="Search by name or email..." type="text"/>
+</div>
+</div>
+<!-- Customer Table Card -->
+<div class="bg-surface rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Customer Name</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider hidden sm:table-cell">Email</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider hidden md:table-cell">Phone</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-center">Total Orders</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider hidden lg:table-cell">Last Order Date</th>
+<th class="py-4 px-6 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container flex-shrink-0 border border-outline-variant">
+<img alt="Sarah Jenkins" class="w-full h-full object-cover" data-alt="A professional headshot of a smiling young woman with short curly brown hair, wearing a casual mustard yellow sweater against a soft, well-lit white studio background. High quality, modern portrait style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvmcCXnSrM2y9o1RmCBN0yOawnN6JtuQs1HXO5mt2ykC-Y6wUJMzUXod-Kw2-_GgMCqVogWyQMUZiOM5xsJ9FCJnToILM6dadyqfFHjLQUMXJtTOfIJCjkOnUBoUHVpaeRHdo24ZaySlQRJfAX4RjTEp8SCap3ozr-ojguFiXyb1vrRkY3NQ_3-aml1Mk5D1bILIlrnKKVurL1nVdH6DCTpOEbIMAz8PO3o1Hh2b5Ss8HtNBFfLpt0uUCna7HB6nSMmFIJIhrjxnw"/>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">Sarah Jenkins</p>
+<p class="font-body-md text-body-md text-on-surface-variant sm:hidden">sarah.j@example.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden sm:table-cell">sarah.j@example.com</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden md:table-cell">+1 (555) 123-4567</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center bg-primary-container text-on-primary-container font-label-md text-label-md rounded-full px-3 py-1">42</span>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden lg:table-cell">Oct 24, 2023</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors" title="View Profile">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-full transition-colors" title="Block/Delete">
+<span class="material-symbols-outlined">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container flex-shrink-0 border border-outline-variant">
+<img alt="Michael Chen" class="w-full h-full object-cover" data-alt="A portrait of a middle-aged man with a neat beard and glasses, wearing a dark blue button-down shirt. The lighting is warm and cinematic, suggesting an urban evening setting. Professional and trustworthy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPqsTj2ny240rLACiyXuSz-YY6jSr_NoIo5X-eU1aWMZTnkiEVOoh4B0FQnBmLJ2jDt0rEowiIjhRMOfNVpKKevNe40nJqx7cDm5eMBtilb656PatsNjxAKcvN2ulOzqKOHhIuefb0NpZ3hOCE58z6_hOo3COKD3jriAsBiD_RShPWzBp8DSOFx5-pt6bZO4SbvE7NSjbOi79eJ9N1jKOLc33ArgHru0q7dVpWH-xfUW4F_gwGHCxsgM0xPveL0L_zFmAW67sY7qw"/>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">Michael Chen</p>
+<p class="font-body-md text-body-md text-on-surface-variant sm:hidden">m.chen88@example.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden sm:table-cell">m.chen88@example.com</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden md:table-cell">+1 (555) 987-6543</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center bg-primary-container text-on-primary-container font-label-md text-label-md rounded-full px-3 py-1">15</span>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden lg:table-cell">Oct 22, 2023</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors" title="View Profile">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-full transition-colors" title="Block/Delete">
+<span class="material-symbols-outlined">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container flex-shrink-0 flex items-center justify-center border border-outline-variant bg-tertiary text-on-tertiary font-title-md text-title-md">
+                                        EJ
+                                    </div>
+<div>
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">Emily Johnson</p>
+<p class="font-body-md text-body-md text-on-surface-variant sm:hidden">emily.j@example.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden sm:table-cell">emily.j@example.com</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden md:table-cell">+1 (555) 222-3333</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center bg-surface-container-high text-on-surface font-label-md text-label-md rounded-full px-3 py-1 border border-outline-variant">3</span>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden lg:table-cell">Sep 15, 2023</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors" title="View Profile">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-full transition-colors" title="Block/Delete">
+<span class="material-symbols-outlined">block</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="py-4 px-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container flex-shrink-0 border border-outline-variant">
+<img alt="David Miller" class="w-full h-full object-cover" data-alt="A portrait of an energetic young man with short spiky blonde hair, wearing a red hoodie. The background is a slightly blurred modern cafe interior with bright natural daylight. High resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaxyQ0NUUZUNW9vLYu-Gcc62strWXxj8A2F2C0RhnUP-P3uDOPPuvSuAs2QjZ5qleA1XhfM5FFneGunwZgAkUnGkagY1ZrrNaz2UBUbunsKP73usfMbtdrDsGA4AJPkrto0pJ4_E7iW3bStrWgIbxRa7wEi4XkQWwP_2vnoqY2AVNWi0JEsvBRUqGGI5MrOg8kgmz73TMz7izGicJ52oIdkUEgJit3SwiwKsNfvsRsdPboee5YNXKyMDzjiJCsfCzg916BkQ3301w"/>
+</div>
+<div>
+<p class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">David Miller</p>
+<p class="font-body-md text-body-md text-on-surface-variant sm:hidden">dave.miller99@example.com</p>
+</div>
+</div>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden sm:table-cell">dave.miller99@example.com</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden md:table-cell">+1 (555) 444-5555</td>
+<td class="py-4 px-6 text-center">
+<span class="inline-flex items-center justify-center bg-primary-container text-on-primary-container font-label-md text-label-md rounded-full px-3 py-1">28</span>
+</td>
+<td class="py-4 px-6 font-body-md text-body-md text-on-surface-variant hidden lg:table-cell">Oct 20, 2023</td>
+<td class="py-4 px-6 text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-low rounded-full transition-colors" title="View Profile">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container rounded-full transition-colors" title="Block/Delete">
+<span class="material-symbols-outlined">block</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 border-t border-outline-variant bg-surface-container-low flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">Showing 1-4 of 128</span>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center">1</button>
+<button class="w-8 h-8 rounded-lg border border-outline-variant text-on-surface font-label-md text-label-md flex items-center justify-center hover:bg-surface-container transition-colors">2</button>
+<button class="w-8 h-8 rounded-lg border border-outline-variant text-on-surface font-label-md text-label-md flex items-center justify-center hover:bg-surface-container transition-colors">3</button>
+<span class="font-body-md text-body-md text-on-surface-variant px-1">...</span>
+<button class="p-2 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-on-background shadow-lg border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-high scale-110 duration-300" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm-mobile mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-high scale-110 duration-300" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-sm text-label-sm-mobile mt-1">Search</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim bg-secondary-fixed dark:bg-secondary-container rounded-full px-6 py-1 active:bg-surface-container-high scale-110 duration-300" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm-mobile mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

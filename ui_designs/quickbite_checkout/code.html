@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" dir="ltr" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QuickBite - Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#241912",
+                        "tertiary": "#00658f",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fff8f5",
+                        "surface-container-highest": "#f3dfd1",
+                        "secondary-container": "#db313f",
+                        "surface": "#fff8f5",
+                        "surface-container-high": "#f9e4d7",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#904d00",
+                        "on-surface-variant": "#564334",
+                        "inverse-surface": "#3a2e25",
+                        "on-secondary-container": "#fffbff",
+                        "inverse-on-surface": "#ffede3",
+                        "secondary-fixed": "#ffdad8",
+                        "outline-variant": "#ddc1ae",
+                        "inverse-primary": "#ffb77d",
+                        "secondary": "#b7102a",
+                        "on-surface": "#241912",
+                        "secondary-fixed-dim": "#ffb3b1",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed-variant": "#6e3900",
+                        "on-primary-container": "#623200",
+                        "on-error-container": "#93000a",
+                        "background": "#fff8f5",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#fff1e9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#2f1500",
+                        "surface-container": "#ffeadd",
+                        "tertiary-container": "#00b5fc",
+                        "on-secondary": "#ffffff",
+                        "primary-fixed": "#ffdcc3",
+                        "on-tertiary-fixed": "#001e2e",
+                        "primary-container": "#ff8c00",
+                        "outline": "#897362",
+                        "on-secondary-fixed": "#410007",
+                        "primary-fixed-dim": "#ffb77d",
+                        "tertiary-fixed-dim": "#85cfff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#ead6c9",
+                        "tertiary-fixed": "#c7e7ff",
+                        "surface-variant": "#f3dfd1",
+                        "on-tertiary-container": "#004360",
+                        "on-secondary-fixed-variant": "#92001c",
+                        "on-tertiary-fixed-variant": "#004c6c",
+                        "surface-tint": "#904d00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "margin-desktop": "48px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Plus Jakarta Sans"],
+                        "title-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "label-sm": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (Minimalist for Checkout) -->
+<header class="bg-surface dark:bg-on-background shadow-sm docked full-width top-0 sticky flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 z-50">
+<div class="flex items-center gap-4">
+<!-- Back Button indicating transactional flow -->
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant flex items-center justify-center scale-95 active:scale-90 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed">QuickBite</div>
+</div>
+<div class="font-title-md text-title-md text-on-surface">Secure Checkout</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-margin-mobile md:px-margin-desktop py-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-lg lg:gap-xl">
+<!-- Left Column: Forms -->
+<div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-lg">
+<!-- Address Section -->
+<section class="bg-surface-container-lowest shadow-sm rounded-xl p-lg md:p-xl border border-surface-container-high">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="location_on" data-weight="fill" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<h2 class="font-title-md text-title-md text-on-surface">Delivery Details</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Full Name</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="John Doe" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Phone Number</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<div class="md:col-span-2 flex flex-col gap-1 mt-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Street Address</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="123 Main St" type="text"/>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Apt / Building</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="Apt 4B" type="text"/>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<label class="font-label-md text-label-md text-on-surface-variant">Delivery Instructions</label>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="e.g. Leave at door" type="text"/>
+</div>
+</div>
+</section>
+<!-- Payment Section -->
+<section class="bg-surface-container-lowest shadow-sm rounded-xl p-lg md:p-xl border border-surface-container-high">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="payment" data-weight="fill" style="font-variation-settings: 'FILL' 1;">payment</span>
+</div>
+<h2 class="font-title-md text-title-md text-on-surface">Payment Method</h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Card Option (Selected) -->
+<label class="flex items-center p-4 border-2 border-primary bg-primary-fixed/10 rounded-xl cursor-pointer transition-colors relative overflow-hidden">
+<input checked="" class="w-5 h-5 text-primary border-outline-variant focus:ring-primary accent-primary mr-4" name="payment" type="radio"/>
+<div class="flex-grow flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="credit_card">credit_card</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Credit / Debit Card</span>
+</div>
+<div class="flex gap-2">
+<div class="w-8 h-5 bg-surface-container-highest rounded flex items-center justify-center text-[8px] font-bold">VISA</div>
+<div class="w-8 h-5 bg-surface-container-highest rounded flex items-center justify-center text-[8px] font-bold">MC</div>
+</div>
+</div>
+</label>
+<!-- Card Mockup (Shows when card selected) -->
+<div class="ml-9 pl-2 border-l-2 border-surface-container-high py-2 flex flex-col gap-3">
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="Card Number" type="text"/>
+<div class="grid grid-cols-2 gap-3">
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="MM/YY" type="text"/>
+<input class="w-full px-4 py-3 rounded-lg border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-container-lowest text-on-surface font-body-md text-body-md" placeholder="CVC" type="text"/>
+</div>
+</div>
+<!-- Cash Option -->
+<label class="flex items-center p-4 border border-outline-variant hover:border-primary/50 rounded-xl cursor-pointer transition-colors">
+<input class="w-5 h-5 text-primary border-outline-variant focus:ring-primary accent-primary mr-4" name="payment" type="radio"/>
+<div class="flex-grow flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="payments">payments</span>
+<span class="font-body-md text-body-md text-on-surface">Cash on Delivery</span>
+</div>
+</label>
+</div>
+</section>
+</div>
+<!-- Right Column: Order Summary -->
+<div class="lg:col-span-5 xl:col-span-4">
+<div class="bg-surface-container-lowest shadow-sm rounded-xl p-lg md:p-xl border border-surface-container-high sticky top-24 flex flex-col h-[calc(100vh-8rem)] max-h-[800px]">
+<h2 class="font-title-md text-title-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                        Order Summary
+                    </h2>
+<!-- Items List (Scrollable) -->
+<div class="flex-grow overflow-y-auto pr-2 flex flex-col gap-4 mb-6 custom-scrollbar">
+<!-- Item 1 -->
+<div class="flex gap-4 items-start">
+<img class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0" data-alt="A close-up of a juicy, double-patty cheeseburger with melted cheddar, fresh lettuce, and tomato on a toasted brioche bun. Warm, appetizing lighting highlighting the glossy bun and melting cheese. Modern corporate food photography style, set against a clean white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6IYCNAwVfohy4PAeVvV694GR6VirFiP5b555AiLuN1mDiSqxsaW64uF9dEmN-3LRRKoyZTDdx1V1EcAOqsShn0YpnzXkKputC6VVqCl75PM-1c9JthCrM_dnHz1VM19oOEJJxu8gwBuOFY8J3aPSZbuUuygXKBFj2kC7_6wn2dkSDB7K_OrBV1ZSAlNTmaVaNzNrZpI0olyX7xNjEZK84DwiOXwF16BfBTKsQh-PwUlyjqPbexrYOzwzIMJyj2iX0jicdJM6GRqs"/>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface line-clamp-2">Classic Double Smashburger</h3>
+<span class="font-body-md text-body-md font-bold text-on-surface shrink-0 ml-2">$14.50</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">No onions, extra sauce</p>
+<div class="mt-2 text-primary font-label-md text-label-md">Qty: 1</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex gap-4 items-start">
+<img class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0" data-alt="A vibrant, healthy grain bowl featuring quinoa, roasted sweet potatoes, fresh avocado slices, and a drizzle of creamy tahini dressing. Bright, clean lighting emphasizing the fresh ingredients. Modern corporate food photography style, set against a pristine white surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9WTF6-iA6mFfffH2pBlQ_8tbs7zjh-zjUf_H6a02QxIu9TmPnsE9Y88N-FgL2KcdLeSCCCkAi0TKweJFvgTceC9RAWM1Y725UEUPqamYbmxTSVndejCO6jViZqKcmVynqA1ofn1-7dmZF1V1uL0e6b1QNfbDbv34fPJmVt-3ADE8ooPkku5t5vGDaSGQ7r6G6vCdgJ-EcuVOOrMmuA9GMVHIWevMzPviW2HdD6k7R0l2OSIR6EM8cxApIqbMWCvxwNyeYF8sNZGY"/>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface line-clamp-2">Roasted Veggie Harvest Bowl</h3>
+<span class="font-body-md text-body-md font-bold text-on-surface shrink-0 ml-2">$12.00</span>
+</div>
+<div class="mt-2 text-primary font-label-md text-label-md">Qty: 1</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="flex gap-4 items-start">
+<img class="w-16 h-16 object-cover rounded-lg shadow-sm shrink-0" data-alt="A side of crispy, golden-brown sweet potato fries served in a small metal basket. Warm, appetizing lighting highlighting the texture of the fries. Modern corporate food photography style, clean minimal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyvKKxl0SMtos2FYVtShjOmYhCEVQdFyhB3mmmp-Us48JyIkhSa0ote_ZCY8YCVrywIjiJlTqrtYM15AZduGoXPcWwGF2asjXR3V2NmWfxmZWsUboNZe7presrRjPo0Nio7YHS9gwfzrV7O57OdB1WJE1WSUlJ-zFnPKn6CMVzw1NH7QKTDxvAKM1vjWdEXDfoX9xAS1rPKhj2voq9o3qqqM2dfGy2W5wjjovgwm9p8DRNVn7AcFbXUfpNNfo0szfwY_W3yWxlxBI"/>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface line-clamp-2">Sweet Potato Fries</h3>
+<span class="font-body-md text-body-md font-bold text-on-surface shrink-0 ml-2">$5.50</span>
+</div>
+<div class="mt-2 text-primary font-label-md text-label-md">Qty: 1</div>
+</div>
+</div>
+</div>
+<!-- Cost Breakdown -->
+<div class="border-t border-outline-variant pt-4 flex flex-col gap-2 mb-6">
+<div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+<span>Subtotal</span>
+<span>$32.00</span>
+</div>
+<div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+<span>Delivery Fee</span>
+<span>$3.50</span>
+</div>
+<div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+<span>Taxes</span>
+<span>$2.88</span>
+</div>
+</div>
+<!-- Total -->
+<div class="border-t border-outline-variant pt-4 mb-6">
+<div class="flex justify-between items-end">
+<span class="font-title-md text-title-md text-on-surface">Total</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg font-bold text-primary">$38.38</span>
+</div>
+</div>
+<!-- Action -->
+<button class="w-full bg-primary hover:bg-primary/90 text-on-primary font-title-md text-title-md py-4 rounded-xl shadow-sm transition-all duration-150 flex items-center justify-center gap-2 scale-95 active:scale-90">
+<span>Place Order</span>
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<p class="text-center font-label-sm text-label-sm text-on-surface-variant mt-4">
+                        By placing this order, you agree to our Terms of Service.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<style>
+        /* Minimal custom scrollbar for the items list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #ddc1ae; /* outline-variant */
+            border-radius: 4px;
+        }
+    </style>
+</body></html>

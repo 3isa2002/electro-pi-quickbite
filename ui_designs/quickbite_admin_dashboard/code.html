@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QuickBite - Admin Orders</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-background": "#241912",
+                    "tertiary": "#00658f",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#fff8f5",
+                    "surface-container-highest": "#f3dfd1",
+                    "secondary-container": "#db313f",
+                    "surface": "#fff8f5",
+                    "surface-container-high": "#f9e4d7",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#904d00",
+                    "on-surface-variant": "#564334",
+                    "inverse-surface": "#3a2e25",
+                    "on-secondary-container": "#fffbff",
+                    "inverse-on-surface": "#ffede3",
+                    "secondary-fixed": "#ffdad8",
+                    "outline-variant": "#ddc1ae",
+                    "inverse-primary": "#ffb77d",
+                    "secondary": "#b7102a",
+                    "on-surface": "#241912",
+                    "secondary-fixed-dim": "#ffb3b1",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#6e3900",
+                    "on-primary-container": "#623200",
+                    "on-error-container": "#93000a",
+                    "background": "#fff8f5",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#fff1e9",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#2f1500",
+                    "surface-container": "#ffeadd",
+                    "tertiary-container": "#00b5fc",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#ffdcc3",
+                    "on-tertiary-fixed": "#001e2e",
+                    "primary-container": "#ff8c00",
+                    "outline": "#897362",
+                    "on-secondary-fixed": "#410007",
+                    "primary-fixed-dim": "#ffb77d",
+                    "tertiary-fixed-dim": "#85cfff",
+                    "error-container": "#ffdad6",
+                    "surface-dim": "#ead6c9",
+                    "tertiary-fixed": "#c7e7ff",
+                    "surface-variant": "#f3dfd1",
+                    "on-tertiary-container": "#004360",
+                    "on-secondary-fixed-variant": "#92001c",
+                    "on-tertiary-fixed-variant": "#004c6c",
+                    "surface-tint": "#904d00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "16px",
+                    "margin-desktop": "48px",
+                    "sm": "8px",
+                    "xl": "32px",
+                    "xs": "4px",
+                    "base": "4px",
+                    "lg": "24px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Plus Jakarta Sans"],
+                    "title-md": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "label-md": ["Plus Jakarta Sans"],
+                    "label-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex selection:bg-primary selection:text-on-primary">
+<!-- SideNavBar -->
+<nav class="bg-surface-container-low dark:bg-inverse-surface shadow-md h-screen w-64 fixed left-0 top-0 flex flex-col h-full border-r border-outline-variant dark:border-outline z-40 hidden md:flex">
+<!-- Header -->
+<div class="p-6 border-b border-outline-variant dark:border-outline">
+<div class="flex items-center gap-4">
+<img alt="Admin Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-primary-container" data-alt="A small, circular profile picture of an administrator in a modern office setting. Warm, bright light, professional corporate styling. High quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChu1Aqkv53Gke_Ulcgoo1YEKEGLXn9JGrqAMCmlSCUsE2lYvUF0_MrU23LRXz2i_jOauQzMgkk9VdJwLidspLapE3uKjt05rmk4CP1PGu0R8JEZeAAfMAu88Utkon9bR53mlqTGBL09rycfu1_8yX7tfXsOLmo7SfSyZdKre1XrAKGXIPDgbFPOopMrteIpQFMjxkQpsdn4Wfn5ZbMw3Xo2vqCcW_5HU_Z-9J3XACCkoyx6pjlHdY_iHnr-gALLIeFS7QKYVRA9ls"/>
+<div>
+<h2 class="font-title-md text-title-md text-primary dark:text-primary-fixed">Admin Panel</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">QuickBite Management</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<div class="flex-1 overflow-y-auto py-4">
+<ul class="space-y-2">
+<li>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" data-icon="dashboard" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="bg-primary-container text-on-primary-container rounded-lg font-bold flex items-center px-4 py-3 mx-2" data-icon="receipt_long" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+</li>
+<li>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" data-icon="restaurant_menu" href="#">
+<span class="material-symbols-outlined mr-3">restaurant_menu</span>
+<span class="font-label-md text-label-md">Menu Management</span>
+</a>
+</li>
+<li>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" data-icon="group" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+<span class="font-label-md text-label-md">Customers</span>
+</a>
+</li>
+</ul>
+<div class="px-4 mt-6">
+<button class="w-full bg-primary text-on-primary hover:bg-[#804500] font-label-md text-label-md py-3 rounded-lg flex justify-center items-center gap-2 transition-colors shadow-sm">
+<span class="material-symbols-outlined">add</span>
+                    Add New Product
+                </button>
+</div>
+</div>
+<!-- Footer Links -->
+<div class="p-4 border-t border-outline-variant dark:border-outline">
+<ul class="space-y-2">
+<li>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg" data-icon="settings" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</li>
+<li>
+<a class="text-on-surface-variant dark:text-outline-variant flex items-center px-4 py-3 mx-2 hover:bg-surface-container-high hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-all rounded-lg text-error" data-icon="logout" href="#">
+<span class="material-symbols-outlined mr-3 text-error">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Mobile Top App Bar (Fallback for small screens) -->
+<header class="md:hidden bg-surface dark:bg-on-background shadow-sm w-full top-0 sticky flex justify-between items-center px-margin-mobile py-4 z-50">
+<div class="flex items-center gap-3">
+<button class="text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed">QuickBite</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:bg-surface-container-low p-2 rounded-full transition-colors"><span class="material-symbols-outlined">search</span></button>
+<img alt="Admin Avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant" data-alt="A small, circular profile picture of an administrator in a modern office setting. Warm, bright light, professional corporate styling. High quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaD31MlpfI7yMicbJNmJ17_sfa06wLxwjoEIZa_gZazYA8FuOdJiBfBU3h916q2Q_whOPsY3MaPLuo-xtNwl6-gKGQWDSbjgbmjKYs4K9oi63Aby4cwLXwXe5oNlGVqy0psgIOKkGvS4IClfaou59atyudsDXI8U5GIRIDpusWwZCZlrC-WYAJgS4COZ8U6nzbNF55uqqCF2xdYuEDa-Ktjcg16BlM1c3LOzhh9hLRqokxp3GM545JB9oDLPV6KJnFxf0XBrgRAfk"/>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-surface-bright min-h-screen">
+<!-- Page Header -->
+<div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-background mb-1">Orders Management</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Monitor and update current delivery orders.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-lowest border border-outline text-on-surface hover:bg-surface-container-low font-label-md text-label-md px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+                    Filter
+                </button>
+<button class="bg-surface-container-lowest border border-outline text-on-surface hover:bg-surface-container-low font-label-md text-label-md px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Export
+                </button>
+</div>
+</div>
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex items-center gap-4 hover:-translate-y-1 transition-transform duration-200">
+<div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Total Orders</p>
+<p class="font-headline-lg text-headline-lg text-on-background">150</p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex items-center gap-4 hover:-translate-y-1 transition-transform duration-200">
+<div class="w-12 h-12 rounded-full bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_dining</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Active Orders</p>
+<p class="font-headline-lg text-headline-lg text-on-background">12</p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/30 flex items-center gap-4 hover:-translate-y-1 transition-transform duration-200">
+<div class="w-12 h-12 rounded-full bg-tertiary-container/20 flex items-center justify-center text-tertiary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1">Revenue</p>
+<p class="font-headline-lg text-headline-lg text-on-background">EGP 25,000</p>
+</div>
+</div>
+</div>
+<!-- Orders Table Section -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
+<div class="p-6 border-b border-outline-variant/50 flex justify-between items-center bg-surface">
+<h3 class="font-title-md text-title-md text-on-background">Recent Orders</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-lg bg-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none font-body-md text-sm text-on-surface transition-all w-64" placeholder="Search orders..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/50 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">
+<th class="p-4 font-semibold">Order ID</th>
+<th class="p-4 font-semibold">Customer Name</th>
+<th class="p-4 font-semibold">Total Price</th>
+<th class="p-4 font-semibold">Status</th>
+<th class="p-4 font-semibold text-right">Action</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-4 font-medium text-primary">#ORD-0921</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-bold text-xs">AH</div>
+                                    Ahmed Hassan
+                                </div>
+</td>
+<td class="p-4">EGP 450.00</td>
+<td class="p-4">
+<select class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm rounded-full px-3 py-1 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none pr-8 cursor-pointer relative" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23897362%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+<option value="pending">Pending</option>
+<option selected="" value="preparing">Preparing</option>
+<option value="ready">Ready for Pickup</option>
+<option value="delivering">Delivering</option>
+<option value="completed">Completed</option>
+</select>
+</td>
+<td class="p-4 text-right">
+<button class="text-secondary hover:text-secondary-container font-label-md text-label-md underline underline-offset-2 transition-colors">View Details</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-4 font-medium text-primary">#ORD-0920</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">SM</div>
+                                    Sarah Mahmoud
+                                </div>
+</td>
+<td class="p-4">EGP 210.50</td>
+<td class="p-4">
+<select class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm rounded-full px-3 py-1 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none pr-8 cursor-pointer relative" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23897362%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+<option selected="" value="pending">Pending</option>
+<option value="preparing">Preparing</option>
+<option value="ready">Ready for Pickup</option>
+<option value="delivering">Delivering</option>
+<option value="completed">Completed</option>
+</select>
+</td>
+<td class="p-4 text-right">
+<button class="text-secondary hover:text-secondary-container font-label-md text-label-md underline underline-offset-2 transition-colors">View Details</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="p-4 font-medium text-primary">#ORD-0919</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-xs">MA</div>
+                                    Mohamed Ali
+                                </div>
+</td>
+<td class="p-4">EGP 890.00</td>
+<td class="p-4">
+<select class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm rounded-full px-3 py-1 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none pr-8 cursor-pointer relative" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23897362%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+<option value="pending">Pending</option>
+<option value="preparing">Preparing</option>
+<option value="ready">Ready for Pickup</option>
+<option selected="" value="delivering">Delivering</option>
+<option value="completed">Completed</option>
+</select>
+</td>
+<td class="p-4 text-right">
+<button class="text-secondary hover:text-secondary-container font-label-md text-label-md underline underline-offset-2 transition-colors">View Details</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors bg-surface-container-low/30">
+<td class="p-4 font-medium text-primary">#ORD-0918</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-outline-variant text-on-surface flex items-center justify-center font-bold text-xs">FZ</div>
+                                    Fatima Zohra
+                                </div>
+</td>
+<td class="p-4">EGP 125.00</td>
+<td class="p-4">
+<select class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-sm text-label-sm rounded-full px-3 py-1 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none pr-8 cursor-pointer relative opacity-70" disabled="" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23897362%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+<option value="pending">Pending</option>
+<option value="preparing">Preparing</option>
+<option value="ready">Ready for Pickup</option>
+<option value="delivering">Delivering</option>
+<option selected="" value="completed">Completed</option>
+</select>
+</td>
+<td class="p-4 text-right">
+<button class="text-secondary hover:text-secondary-container font-label-md text-label-md underline underline-offset-2 transition-colors">View Details</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 border-t border-outline-variant/50 bg-surface flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Showing 1 to 4 of 150 entries</span>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container-low disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-label-md text-label-md">1</button>
+<button class="w-8 h-8 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container-low font-label-md text-label-md">2</button>
+<button class="w-8 h-8 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container-low font-label-md text-label-md">3</button>
+<button class="w-8 h-8 rounded-lg border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe shadow-lg bg-surface dark:bg-on-background border-t border-outline-variant docked full-width">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-high p-2 rounded-lg transition-colors" data-icon="dashboard" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm-mobile mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed-dim bg-secondary-fixed dark:bg-secondary-container rounded-full px-6 py-1 active:bg-surface-container-high transition-colors" data-icon="receipt_long" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="font-label-sm text-label-sm-mobile mt-1 font-bold">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-high p-2 rounded-lg transition-colors" data-icon="restaurant_menu" href="#">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="font-label-sm text-label-sm-mobile mt-1">Menu</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant active:bg-surface-container-high p-2 rounded-lg transition-colors" data-icon="group" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm text-label-sm-mobile mt-1">Customers</span>
+</a>
+</nav>
+</body></html>
