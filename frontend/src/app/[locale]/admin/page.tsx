@@ -32,6 +32,8 @@ type Order = {
   total_amount: number;
   status: string;
   payment_method: string;
+  driver_name?: string;
+  driver_phone?: string;
   items: OrderItem[];
 };
 
@@ -50,7 +52,6 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<Record<number, User>>({});
   const [searchQuery, setSearchQuery] = useState("");
-  const [driverModal, setDriverModal] = useState<{isOpen: boolean, orderId: number | null}>({isOpen: false, orderId: null});
 
   const MOCK_DRIVERS = [
     { name: "احمد محمود", phone: "01012345678" },
@@ -59,6 +60,7 @@ export default function AdminDashboard() {
     { name: "محمود حسن", phone: "01555555555" }
   ];
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+
 
   const fetchData = async () => {
     const token = getToken();
@@ -99,27 +101,6 @@ export default function AdminDashboard() {
     return () => clearInterval(interval);
   }, [router]);
 
-  const updateOrderStatus = async (orderId: number, newStatus: string, driver_name?: string, driver_phone?: string) => {
-    const token = getToken();
-    try {
-      const payload: any = { status: newStatus };
-      if (driver_name && driver_phone) {
-        payload.driver_name = driver_name;
-        payload.driver_phone = driver_phone;
-      }
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/admin/orders/${orderId}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        const updatedOrder = await res.json();
-        setOrders(prev => prev.map(o => o.id === orderId ? updatedOrder : o));
-      } else {
-        alert(t("failedUpdateStatus"));
       }
     } catch (err) {
       console.error(err);
@@ -287,18 +268,41 @@ export default function AdminDashboard() {
                       </div>
                     </td>
                     <td className="p-4">{t("currency")} {order.total_amount.toFixed(2)}</td>
-                    <td className="p-4">
-                      <select 
-                        value={order.status} 
-                        onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                        className={`bg-surface-container-lowest border border-outline-variant font-label-sm text-label-sm rounded-full px-3 py-1 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none pr-8 rtl:pr-3 rtl:pl-8 cursor-pointer relative ${order.status === 'Delivered' ? 'text-primary' : 'text-on-surface'}`} 
-                        style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23897362%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')", backgroundRepeat: "no-repeat", backgroundPosition: "right 0.7rem top 50%", backgroundSize: "0.65rem auto" }}
-                      >
-                        <option value="Pending">{t("statusPending")}</option>
-                        <option value="Preparing">{t("statusPreparing")}</option>
-                        <option value="Out for Delivery">{t("statusDelivering")}</option>
-                        <option value="Delivered">{t("statusCompleted")}</option>
-                      </select>
+                    <td className="p-4 align-top">
+                      <div className="flex flex-col gap-2 min-w-[140px]">
+                        <select 
+                          value={order.status} 
+                          onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                          className={`bg-surface-container-lowest border border-outline-variant font-label-sm text-label-sm rounded-full px-3 py-1 focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none pr-8 rtl:pr-3 rtl:pl-8 cursor-pointer relative ${order.status === 'Delivered' ? 'text-primary' : 'text-on-surface'}`} 
+                          style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23897362%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')", backgroundRepeat: "no-repeat", backgroundPosition: "right 0.7rem top 50%", backgroundSize: "0.65rem auto" }}
+                        >
+                          <option value="Pending">{t("statusPending")}</option>
+                          <option value="Preparing">{t("statusPreparing")}</option>
+                          <option value="Out for Delivery">{t("statusDelivering")}</option>
+                          <option value="Delivered">{t("statusCompleted")}</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                        
+                        {order.status === 'Out for Delivery' && !order.driver_name && (
+                          <select 
+                            className="bg-white border-2 border-primary text-primary font-label-sm text-[12px] rounded-lg px-2 py-1 outline-none cursor-pointer w-full shadow-sm"
+                            onChange={(e) => assignDriverInline(order.id, e.target.value)}
+                            defaultValue=""
+                          >
+                            <option value="" disabled>اختر السائق...</option>
+                            {MOCK_DRIVERS.map((driver, idx) => (
+                              <option key={idx} value={idx}>{driver.name}</option>
+                            ))}
+                          </select>
+                        )}
+                        
+                        {order.driver_name && (
+                          <div className="flex items-center gap-1 text-[11px] text-on-surface-variant bg-surface-container-high rounded px-2 py-1 w-max">
+                            <span className="material-symbols-outlined text-[14px]">two_wheeler</span>
+                            {order.driver_name}
+                          </div>
+                        )}
+                      </div>
                     </td>
                     <td className="p-4 text-right rtl:text-left">
                       <button 
@@ -339,65 +343,15 @@ export default function AdminDashboard() {
         onStatusChange={handleStatusChange}
       />
 
-      {/* Driver Selection Modal - Wide & Centered */}
-      {driverModal.isOpen && (
-        <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-          onClick={() => setDriverModal({ isOpen: false, orderId: null })}
-        >
-          <div 
-            className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-outline-variant overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 bg-gray-50">
-              <div>
-                <h2 className="font-headline-sm text-headline-sm text-gray-900">اختر سائق التوصيل</h2>
-                <p className="font-body-sm text-body-sm text-gray-600 mt-1">
-                  طلب رقم <span className="text-primary font-bold">#{driverModal.orderId}</span>
-                </p>
-              </div>
-              <button
-                onClick={() => setDriverModal({ isOpen: false, orderId: null })}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
-              >
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
-
-            {/* Drivers Grid */}
-            <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white">
-              {MOCK_DRIVERS.map((driver, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => assignDriver(driver)}
-                  className="flex items-center gap-4 p-5 rounded-xl border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 active:scale-[0.97] transition-all duration-150 text-start w-full group"
-                >
-                  {/* Avatar */}
-                  <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                    <span className="material-symbols-outlined text-[26px]">two_wheeler</span>
-                  </div>
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-title-md text-title-md text-gray-900">{driver.name}</p>
-                    <p className="font-body-sm text-body-sm text-gray-600 mt-0.5" dir="ltr">{driver.phone}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {/* Footer */}
-            <div className="px-5 pb-5 pt-2 bg-white">
-              <button
-                onClick={() => setDriverModal({ isOpen: false, orderId: null })}
-                className="w-full py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 active:scale-[0.98] transition-all font-label-md text-label-md"
-              >
-                إلغاء
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <OrderDetailsModal 
+        isOpen={selectedOrderId !== null}
+        onClose={() => setSelectedOrderId(null)}
+        order={orders.find(o => o.id === selectedOrderId) || null}
+        user={selectedOrderId ? users[orders.find(o => o.id === selectedOrderId)?.user_id || 0] : undefined}
+        onStatusChange={handleStatusChange}
+        MOCK_DRIVERS={MOCK_DRIVERS}
+        onAssignDriver={assignDriverInline}
+      />
     </>
   );
 }

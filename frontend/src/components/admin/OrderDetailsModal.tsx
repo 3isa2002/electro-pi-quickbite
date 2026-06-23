@@ -37,9 +37,11 @@ type Props = {
   order: Order | null;
   user: User | undefined;
   onStatusChange: (orderId: number, status: string) => void;
+  MOCK_DRIVERS?: {name: string, phone: string}[];
+  onAssignDriver?: (orderId: number, driverIndex: string) => void;
 };
 
-export default function OrderDetailsModal({ isOpen, onClose, order, user, onStatusChange }: Props) {
+export default function OrderDetailsModal({ isOpen, onClose, order, user, onStatusChange, MOCK_DRIVERS, onAssignDriver }: Props) {
   const t = useTranslations("Admin");
 
   if (!isOpen || !order) return null;
@@ -88,10 +90,10 @@ export default function OrderDetailsModal({ isOpen, onClose, order, user, onStat
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
           
           {/* Status & Meta */}
-          <div className="flex flex-wrap gap-4 items-center justify-between bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/50 shadow-sm">
+          <div className="flex flex-wrap gap-4 items-start justify-between bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/50 shadow-sm">
             <div className="flex-1 min-w-[200px]">
               <label className="block font-label-sm text-label-sm text-on-surface-variant mb-1">{t("status")}</label>
-              <div className="relative">
+              <div className="relative mb-2">
                 <select 
                   value={order.status}
                   onChange={(e) => onStatusChange(order.id, e.target.value)}
@@ -101,9 +103,30 @@ export default function OrderDetailsModal({ isOpen, onClose, order, user, onStat
                   <option value="Preparing">{t("statusPreparing")}</option>
                   <option value="Out for Delivery">{t("statusDelivering")}</option>
                   <option value="Delivered">{t("statusCompleted")}</option>
+                  <option value="Cancelled">Cancelled</option>
                 </select>
                 <span className="material-symbols-outlined absolute right-3 rtl:left-3 rtl:right-auto top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
               </div>
+              
+              {order.status === 'Out for Delivery' && !order.driver_name && MOCK_DRIVERS && onAssignDriver && (
+                <select 
+                  className="w-full bg-surface border-2 border-primary text-primary font-label-md rounded-lg px-3 py-2 outline-none cursor-pointer mt-2"
+                  onChange={(e) => onAssignDriver(order.id, e.target.value)}
+                  defaultValue=""
+                >
+                  <option value="" disabled>-- اختر السائق لتعيينه --</option>
+                  {MOCK_DRIVERS.map((driver, idx) => (
+                    <option key={idx} value={idx}>{driver.name} ({driver.phone})</option>
+                  ))}
+                </select>
+              )}
+              
+              {order.driver_name && (
+                <div className="flex items-center gap-2 mt-2 bg-primary/10 text-primary font-label-sm rounded-lg px-3 py-2">
+                  <span className="material-symbols-outlined text-[16px]">two_wheeler</span>
+                  <span>السائق: {order.driver_name}</span>
+                </div>
+              )}
             </div>
             
             <div className="flex flex-col items-end rtl:items-start">
