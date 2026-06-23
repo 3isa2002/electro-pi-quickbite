@@ -34,6 +34,7 @@ type Order = {
   payment_method: string;
   driver_name?: string;
   driver_phone?: string;
+  created_at?: string;
   items: OrderItem[];
 };
 
@@ -52,6 +53,7 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<Record<number, User>>({});
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDateStr, setSelectedDateStr] = useState<string>(new Date().toDateString());
 
   const MOCK_DRIVERS = [
     { name: "احمد محمود", phone: "01012345678" },
@@ -97,7 +99,8 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000); // refresh every 10s
+    const interval = setInterval(fetchData, 60000); // refresh every 60s
+
     return () => clearInterval(interval);
   }, [router]);
   const handleStatusChange = async (orderId: number, newStatus: string) => {
@@ -147,13 +150,24 @@ export default function AdminDashboard() {
   };
 
 
+  // Date Range Generation (Last 5 Days)
+  const last5Days = Array.from({length: 5}).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    d.setHours(0,0,0,0);
+    return d;
+  }).reverse();
+
+  // Filter orders by selected date
+  const dateOrders = orders.filter(o => o.created_at && new Date(o.created_at).toDateString() === selectedDateStr);
+
   // Stats calculation
-  const totalOrders = orders.length;
-  const activeOrders = orders.filter(o => o.status !== "Delivered").length;
-  const revenue = orders.reduce((sum, o) => sum + o.total_amount, 0);
+  const totalOrders = dateOrders.length;
+  const activeOrders = dateOrders.filter(o => o.status !== "Delivered" && o.status !== "Cancelled").length;
+  const revenue = dateOrders.reduce((sum, o) => sum + o.total_amount, 0);
 
   // Filtering
-  const filteredOrders = orders.filter(o => {
+  const filteredOrders = dateOrders.filter(o => {
     const term = searchQuery.toLowerCase();
     const orderIdStr = `ORD-${o.id.toString().padStart(4, '0')}`.toLowerCase();
     const userName = users[o.user_id]?.name.toLowerCase() || "";
@@ -187,6 +201,31 @@ export default function AdminDashboard() {
             {t("export")}
           </button>
         </div>
+      </div>
+
+      {/* Calendar Strip */}
+      <div className="flex gap-4 overflow-x-auto pb-4 mb-6 custom-scrollbar" dir="ltr">
+        {last5Days.map(date => {
+          const dateStr = date.toDateString();
+          const isActive = dateStr === selectedDateStr;
+          const hasOrders = orders.some(o => o.created_at && new Date(o.created_at).toDateString() === dateStr);
+          
+          return (
+            <button 
+              key={dateStr}
+              onClick={() => setSelectedDateStr(dateStr)}
+              className={`flex-shrink-0 flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all min-w-[100px] ${isActive ? 'bg-primary border-primary text-on-primary shadow-md' : 'bg-surface-container-lowest border-outline-variant hover:border-primary text-on-surface'}`}
+            >
+              <span className={`font-label-sm text-[11px] uppercase mb-1 ${isActive ? 'text-primary-container' : 'text-on-surface-variant'}`}>
+                {date.toLocaleDateString(locale, { weekday: 'short' })}
+              </span>
+              <span className="font-headline-md text-headline-md font-bold mb-2">
+                {date.getDate()}
+              </span>
+              <div className={`w-2 h-2 rounded-full ${hasOrders ? (isActive ? 'bg-white' : 'bg-success') : 'bg-transparent'}`}></div>
+            </button>
+          )
+        })}
       </div>
 
       {/* Statistics Cards */}
