@@ -96,6 +96,15 @@ def seed_historical_data():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+@app.get("/cleanup-history")
+def cleanup_historical_data():
+    import cleanup
+    try:
+        cleanup.run_cleanup()
+        return {"status": "success", "message": "Cleanup completed on Render DB!"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to QuickBite API"}
