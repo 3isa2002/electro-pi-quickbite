@@ -32,6 +32,9 @@ type Order = {
   id: number;
   user_id: number;
   total_amount: number;
+  subtotal?: number;
+  tax_amount?: number;
+  delivery_fee?: number;
   status: string;
   created_at?: string;
   items: OrderItem[];
