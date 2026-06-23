@@ -100,27 +100,52 @@ export default function AdminDashboard() {
     const interval = setInterval(fetchData, 10000); // refresh every 10s
     return () => clearInterval(interval);
   }, [router]);
-
+  const handleStatusChange = async (orderId: number, newStatus: string) => {
+    const token = getToken();
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/admin/orders/${orderId}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (res.ok) {
+        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+      } else {
+        alert(t("failedUpdateStatus"));
       }
     } catch (err) {
       console.error(err);
+      alert("Error updating status");
     }
   };
 
-  const handleStatusChange = async (orderId: number, newStatus: string) => {
-    if (newStatus === "Out for Delivery") {
-      setDriverModal({ isOpen: true, orderId });
-      return;
+  const assignDriverInline = async (orderId: number, driverIndex: string) => {
+    if (!driverIndex) return;
+    const driver = MOCK_DRIVERS[parseInt(driverIndex)];
+    const token = getToken();
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/admin/orders/${orderId}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: "Out for Delivery", driver_name: driver.name, driver_phone: driver.phone })
+      });
+      if (res.ok) {
+        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: "Out for Delivery", driver_name: driver.name, driver_phone: driver.phone } : o));
+      } else {
+        alert("Failed to assign driver");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error assigning driver");
     }
-    await updateOrderStatus(orderId, newStatus);
   };
 
-  const assignDriver = async (driver: {name: string, phone: string}) => {
-    if (driverModal.orderId) {
-      await updateOrderStatus(driverModal.orderId, "Out for Delivery", driver.name, driver.phone);
-    }
-    setDriverModal({ isOpen: false, orderId: null });
-  };
 
   // Stats calculation
   const totalOrders = orders.length;

@@ -28,6 +28,8 @@ type Order = {
   payment_method: string;
   shipping_address?: string;
   shipping_phone?: string;
+  driver_name?: string;
+  driver_phone?: string;
   items: OrderItem[];
 };
 
