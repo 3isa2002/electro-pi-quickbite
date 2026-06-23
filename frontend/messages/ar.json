@@ -134,7 +134,19 @@
     "statusCompleted": "مكتمل",
     "failedSaveProduct": "فشل حفظ المنتج.",
     "failedDeleteProduct": "فشل حذف المنتج.",
-    "failedUpdateStatus": "فشل تحديث الحالة.",
+    "failedUpdateStatus": "فشل في تحديث الحالة",
+    "dashboardOverview": "نظرة عامة على لوحة القيادة",
+    "dashboardSubtitle": "تحليلات وملخص لأداء عملك.",
+    "revenueChart": "الإيرادات بمرور الوقت",
+    "orderStatusChart": "توزيع حالات الطلبات",
+    "bestSellers": "الأكثر مبيعاً",
+    "liveActivity": "النشاط المباشر",
+    "averageOrderValue": "متوسط قيمة الطلب",
+    "newCustomers": "عملاء جدد اليوم",
+    "fromYesterday": "عن الأمس",
+    "justNow": "الآن",
+    "orderPlaced": "قام بطلب جديد",
+    "viewDetails": "عرض التفاصيل",
     "currency": "ج.م"
   }
 }

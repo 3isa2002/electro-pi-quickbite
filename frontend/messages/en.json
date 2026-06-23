@@ -134,7 +134,18 @@
     "statusCompleted": "Completed",
     "failedSaveProduct": "Failed to save product.",
     "failedDeleteProduct": "Failed to delete product.",
-    "failedUpdateStatus": "Failed to update status.",
+    "failedUpdateStatus": "Failed to update status",
+    "dashboardOverview": "Dashboard Overview",
+    "dashboardSubtitle": "Analytics and summary of your business performance.",
+    "revenueChart": "Revenue Over Time",
+    "orderStatusChart": "Order Status Distribution",
+    "bestSellers": "Best Sellers",
+    "liveActivity": "Live Activity Feed",
+    "averageOrderValue": "Average Order Value",
+    "newCustomers": "New Customers Today",
+    "fromYesterday": "from yesterday",
+    "justNow": "Just now",
+    "orderPlaced": "placed a new order",
     "currency": "EGP"
   }
 }
