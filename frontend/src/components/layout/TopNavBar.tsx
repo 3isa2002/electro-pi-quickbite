@@ -117,6 +117,10 @@ export default function TopNavBar({ variant = "default", onMenuClick }: { varian
                       {t("adminDashboard")}
                     </Link>
                   )}
+                  <Link href="/profile" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2 px-4 py-2 text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+                    <span className="material-symbols-outlined text-sm">person</span>
+                    {t("profile")}
+                  </Link>
                   <button onClick={() => { logout(); setIsDropdownOpen(false); }} className="w-full flex items-center gap-2 px-4 py-2 text-error hover:bg-error-container/10 transition-colors font-label-md text-label-md text-left rtl:text-right">
                     <span className="material-symbols-outlined text-sm">logout</span>
                     {t("logout")}
