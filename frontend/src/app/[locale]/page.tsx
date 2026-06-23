@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import TopNavBar from "@/components/layout/TopNavBar";
 import BottomNavBar from "@/components/layout/BottomNavBar";
 import CartDrawer from "@/components/cart/CartDrawer";
@@ -53,6 +53,7 @@ const ListSkeleton = () => (
 
 export default function Home() {
   const t = useTranslations("Home");
+  const locale = useLocale();
   const { isCartOpen } = useCart();
   
   const [products, setProducts] = useState<BackendProduct[]>([]);
@@ -157,12 +158,12 @@ export default function Home() {
           <h2 className="font-title-md text-title-md text-on-background mb-md">{t("categories")}</h2>
           <div className="flex overflow-x-auto gap-sm scrollbar-hide pb-sm">
             {[
-              { name: "All", icon: "restaurant" },
-              { name: "Burgers", icon: "lunch_dining" },
-              { name: "Pizza", icon: "local_pizza" },
-              { name: "Koshary", icon: "rice_bowl" },
-              { name: "Drinks", icon: "local_drink" },
-              { name: "Desserts", icon: "icecream" }
+              { name: "All",      nameAr: "الكل",       icon: "restaurant" },
+              { name: "Burgers",  nameAr: "برجر",        icon: "lunch_dining" },
+              { name: "Pizza",    nameAr: "بيتزا",       icon: "local_pizza" },
+              { name: "Koshary",  nameAr: "كشري",        icon: "rice_bowl" },
+              { name: "Drinks",   nameAr: "مشروبات",     icon: "local_drink" },
+              { name: "Desserts", nameAr: "حلويات",      icon: "icecream" }
             ].map((cat) => (
               <button 
                 key={cat.name}
@@ -170,7 +171,7 @@ export default function Home() {
                 className={`flex items-center gap-xs px-4 py-2 rounded-full shadow-sm flex-shrink-0 transition-colors cursor-pointer ${selectedCategory === cat.name ? "bg-primary text-on-primary" : "bg-surface-container-high text-on-surface hover:bg-surface-variant"}`}
               >
                 <span className="material-symbols-outlined text-[20px]">{cat.icon}</span>
-                <span className="font-label-md text-label-md">{cat.name === "All" ? t("categories") : cat.name}</span>
+                <span className="font-label-md text-label-md">{cat.name === "All" ? t("categories") : (locale === "ar" ? cat.nameAr : cat.name)}</span>
               </button>
             ))}
           </div>
