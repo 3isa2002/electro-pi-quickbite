@@ -42,6 +42,14 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<Record<number, User>>({});
   const [searchQuery, setSearchQuery] = useState("");
+  const [driverModal, setDriverModal] = useState<{isOpen: boolean, orderId: number | null}>({isOpen: false, orderId: null});
+
+  const MOCK_DRIVERS = [
+    { name: "احمد محمود", phone: "01012345678" },
+    { name: "محمد طارق", phone: "01198765432" },
+    { name: "سيد علي", phone: "01234567890" },
+    { name: "محمود حسن", phone: "01555555555" }
+  ];
   const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
 
   const fetchData = async () => {
@@ -83,16 +91,21 @@ export default function AdminDashboard() {
     return () => clearInterval(interval);
   }, [router]);
 
-  const handleStatusChange = async (orderId: number, newStatus: string) => {
+  const updateOrderStatus = async (orderId: number, newStatus: string, driver_name?: string, driver_phone?: string) => {
     const token = getToken();
     try {
+      const payload: any = { status: newStatus };
+      if (driver_name && driver_phone) {
+        payload.driver_name = driver_name;
+        payload.driver_phone = driver_phone;
+      }
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/admin/orders/${orderId}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ status: newStatus })
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
         const updatedOrder = await res.json();
@@ -103,6 +116,21 @@ export default function AdminDashboard() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleStatusChange = async (orderId: number, newStatus: string) => {
+    if (newStatus === "Out for Delivery") {
+      setDriverModal({ isOpen: true, orderId });
+      return;
+    }
+    await updateOrderStatus(orderId, newStatus);
+  };
+
+  const assignDriver = async (driver: {name: string, phone: string}) => {
+    if (driverModal.orderId) {
+      await updateOrderStatus(driverModal.orderId, "Out for Delivery", driver.name, driver.phone);
+    }
+    setDriverModal({ isOpen: false, orderId: null });
   };
 
   // Stats calculation
@@ -293,6 +321,44 @@ export default function AdminDashboard() {
         user={selectedOrderId ? users[orders.find(o => o.id === selectedOrderId)?.user_id || 0] : undefined}
         onStatusChange={handleStatusChange}
       />
+
+      {/* Driver Selection Modal */}
+      {driverModal.isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-on-background/40 backdrop-blur-sm">
+          <div className="bg-surface-container-lowest rounded-xl shadow-lg p-6 w-full max-w-md border border-outline-variant">
+            <h2 className="font-title-lg text-title-lg text-on-surface mb-4">اختر سائق التوصيل</h2>
+            <p className="font-body-md text-body-md text-on-surface-variant mb-6">الرجاء تحديد السائق الذي سيقوم بتوصيل الطلب #{driverModal.orderId}:</p>
+            
+            <div className="flex flex-col gap-3 mb-6">
+              {MOCK_DRIVERS.map((driver, idx) => (
+                <button 
+                  key={idx}
+                  onClick={() => assignDriver(driver)}
+                  className="flex items-center justify-between p-4 rounded-lg border border-outline-variant/50 hover:bg-surface-container-low transition-colors text-right rtl:text-right"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+                      <span className="material-symbols-outlined text-sm">two_wheeler</span>
+                    </div>
+                    <div>
+                      <p className="font-title-md text-title-md text-on-surface">{driver.name}</p>
+                      <p className="font-body-sm text-body-sm text-on-surface-variant" dir="ltr">{driver.phone}</p>
+                    </div>
+                  </div>
+                  <span className="material-symbols-outlined text-primary rtl:rotate-180">chevron_right</span>
+                </button>
+              ))}
+            </div>
+            
+            <button 
+              onClick={() => setDriverModal({ isOpen: false, orderId: null })}
+              className="w-full py-3 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md"
+            >
+              إلغاء
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 }

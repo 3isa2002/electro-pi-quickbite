@@ -57,9 +57,10 @@ export default function ProfilePage() {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
-        const data = await res.json();
-        // Filter only delivered/completed orders for history, or show all
-        setOrders(data);
+        const data: Order[] = await res.json();
+        // Filter only delivered/completed orders for history
+        const deliveredOrders = data.filter(order => order.status === 'Delivered');
+        setOrders(deliveredOrders);
       }
     } catch (error) {
       console.error(error);

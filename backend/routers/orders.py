@@ -86,6 +86,11 @@ def update_order_status(
         raise HTTPException(status_code=404, detail="Order not found")
     
     order.status = status_update.status.value
+    if status_update.driver_name is not None:
+        order.driver_name = status_update.driver_name
+    if status_update.driver_phone is not None:
+        order.driver_phone = status_update.driver_phone
+        
     db.commit()
     db.refresh(order)
     return order

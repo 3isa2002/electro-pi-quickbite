@@ -28,6 +28,8 @@ type Order = {
   payment_method: string;
   shipping_address: string;
   shipping_phone: string;
+  driver_name?: string;
+  driver_phone?: string;
   created_at: string;
   items: OrderItem[];
 };
@@ -204,22 +206,34 @@ export default function TrackOrder() {
               </div>
             </div>
 
-            <section className="bg-surface-container-lowest rounded-xl shadow-sm p-lg border border-outline-variant flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-md">
-                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzH6kDWv92Zj2Zv1p9DjDmyjC47JflLdhFXOCNaLuAJYQMS7_8zH-W4iJRix0vObQOXMo5SnjQLYtfDaV-_Y6UKjN7XAZCQyVBk59la3j4OhbS4As_IkUDSX_XgHg-85Ln2ivO8t0cH4aQ_xecavsJ8YLGGaFN2Jjm8vqeQvKT2v4TZZ_fDCVtHmk0XsFKxTSyMSnlCkmcI9FMvPlBLXK0pw9Ilo7Pja5du8_0hMxRMXdXj6ZGQIUdUgHk-mzQMsJ233nqLw7ODVc" className="w-16 h-16 rounded-full object-cover shadow-sm border-2 border-surface-variant" alt="Driver" />
-                <div>
-                  <h3 className="font-title-md text-title-md text-on-surface">Ahmed K.</h3>
-                  <div className="flex items-center gap-xs text-primary">
-                    <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                    <span className="font-label-md text-label-md">{t("rating", { rating: "4.9" })}</span>
+            {currentStatusIndex >= 2 ? (
+              <section className="bg-surface-container-lowest rounded-xl shadow-sm p-lg border border-outline-variant flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-md">
+                  <div className="w-16 h-16 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-headline-lg shadow-sm border-2 border-surface-variant">
+                    {order.driver_name ? order.driver_name.substring(0, 2) : "D"}
+                  </div>
+                  <div>
+                    <h3 className="font-title-md text-title-md text-on-surface">{order.driver_name || "Driver"}</h3>
+                    <div className="flex items-center gap-xs text-primary">
+                      <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                      <span className="font-label-md text-label-md">{t("rating", { rating: "4.9" })}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <button className="bg-surface-container-lowest border-2 border-secondary text-secondary font-label-md text-label-md px-6 py-3 rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-2">
-                <span className="material-symbols-outlined">call</span>
-                {t("callDriver")}
-              </button>
-            </section>
+                {order.driver_phone && (
+                  <a href={`tel:${order.driver_phone}`} className="bg-surface-container-lowest border-2 border-secondary text-secondary font-label-md text-label-md px-6 py-3 rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-2">
+                    <span className="material-symbols-outlined">call</span>
+                    {t("callDriver")}
+                  </a>
+                )}
+              </section>
+            ) : (
+              <section className="bg-surface-container-low rounded-xl shadow-sm p-lg border border-outline-variant text-center">
+                <span className="material-symbols-outlined text-[48px] text-primary mb-2">local_shipping</span>
+                <p className="font-title-md text-title-md text-on-surface">سيظهر اسم ورقم السائق عندما يكون الطلب في مرحلة التوصيل</p>
+                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Driver info will appear when the order is out for delivery.</p>
+              </section>
+            )}
           </div>
         </div>
       </main>

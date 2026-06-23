@@ -49,6 +49,8 @@ class Order(Base):
     payment_method = Column(String, default=PaymentMethod.ONLINE.value)
     shipping_address = Column(String)
     shipping_phone = Column(String)
+    driver_name = Column(String, nullable=True)
+    driver_phone = Column(String, nullable=True)
 
     user = relationship("User", back_populates="orders")
     items = relationship("OrderItem", back_populates="order")

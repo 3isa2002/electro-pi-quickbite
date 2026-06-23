@@ -88,9 +88,13 @@ class OrderResponse(BaseModel):
     payment_method: str
     shipping_address: Optional[str] = None
     shipping_phone: Optional[str] = None
+    driver_name: Optional[str] = None
+    driver_phone: Optional[str] = None
     items: List[OrderItemResponse]
     
     model_config = ConfigDict(from_attributes=True)
 
 class OrderStatusUpdate(BaseModel):
     status: OrderStatusEnum
+    driver_name: Optional[str] = None
+    driver_phone: Optional[str] = None
