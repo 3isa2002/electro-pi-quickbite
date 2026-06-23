@@ -87,11 +87,15 @@ export default function AdminDashboardPage() {
   }, [router]);
 
   // Calculations
-  const today = new Date().toDateString();
-  const todayOrders = orders; // Assume all orders are recent for now if created_at isn't available
+  const todayOrders = orders.filter(o => o.status !== "Cancelled");
   
-  const totalRevenue = todayOrders.reduce((sum, o) => o.status !== "Cancelled" ? sum + o.total_amount : sum, 0);
-  const avgOrderValue = todayOrders.length > 0 ? (totalRevenue / todayOrders.length) : 0;
+  const grossRevenue = todayOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+  // Support old orders by treating total_amount as subtotal if subtotal isn't set
+  const netProfit = todayOrders.reduce((sum, o) => sum + (o.subtotal || o.total_amount || 0), 0);
+  const totalTaxes = todayOrders.reduce((sum, o) => sum + (o.tax_amount || 0), 0);
+  const totalDeliveryFees = todayOrders.reduce((sum, o) => sum + (o.delivery_fee || 0), 0);
+  
+  const avgOrderValue = todayOrders.length > 0 ? (grossRevenue / todayOrders.length) : 0;
   
   // Status Distribution
   const statusCounts = orders.reduce((acc, order) => {
@@ -106,28 +110,26 @@ export default function AdminDashboardPage() {
 
   // Best Sellers
   const productSales: Record<number, { name: string, count: number, revenue: number, image: string }> = {};
-  orders.forEach(order => {
-    if (order.status !== "Cancelled") {
-      order.items.forEach(item => {
-        if (!productSales[item.product_id]) {
-          productSales[item.product_id] = { 
-            name: item.product.name_en, // You could switch by locale here
-            count: 0, 
-            revenue: 0,
-            image: item.product.image_url 
-          };
-        }
-        productSales[item.product_id].count += item.quantity;
-        productSales[item.product_id].revenue += (item.quantity * item.product.price);
-      });
-    }
+  todayOrders.forEach(order => {
+    order.items.forEach(item => {
+      if (!productSales[item.product_id]) {
+        productSales[item.product_id] = { 
+          name: item.product.name_en, // You could switch by locale here
+          count: 0, 
+          revenue: 0,
+          image: item.product.image_url 
+        };
+      }
+      productSales[item.product_id].count += item.quantity;
+      productSales[item.product_id].revenue += (item.quantity * item.product.price);
+    });
   });
 
   const bestSellers = Object.values(productSales)
     .sort((a, b) => b.count - a.count)
     .slice(0, 4);
 
-  // Mock Revenue Data for Line Chart (Blending with real today revenue)
+  // Mock Revenue Data for Line Chart (Blending with real today gross revenue)
   const lineData = [
     { name: 'Mon', revenue: 4000 },
     { name: 'Tue', revenue: 3000 },
@@ -135,7 +137,7 @@ export default function AdminDashboardPage() {
     { name: 'Thu', revenue: 4500 },
     { name: 'Fri', revenue: 6000 },
     { name: 'Sat', revenue: 7000 },
-    { name: 'Today', revenue: totalRevenue > 0 ? totalRevenue : 3500 },
+    { name: 'Today', revenue: grossRevenue > 0 ? grossRevenue : 3500 },
   ];
 
   if (loading) {
@@ -155,55 +157,60 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+        {/* Gross Revenue */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 flex justify-between items-center"
         >
           <div>
-            <p className="font-label-md text-label-md text-on-surface-variant mb-2">{t("revenue")}</p>
-            <h3 className="font-headline-lg text-headline-lg text-on-background">{t("currency")} {totalRevenue.toFixed(0)}</h3>
-            <p className="font-body-sm text-body-sm text-success mt-2 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">trending_up</span>
-              +15% {t("fromYesterday")}
-            </p>
+            <p className="font-label-md text-label-md text-on-surface-variant mb-2">{t("grossRevenue")}</p>
+            <h3 className="font-headline-md text-headline-md text-on-background">{t("currency")} {grossRevenue.toFixed(0)}</h3>
           </div>
-          <div className="w-14 h-14 rounded-full bg-primary-container/30 flex items-center justify-center text-primary">
-            <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
+          <div className="w-12 h-12 rounded-full bg-primary-container/30 flex items-center justify-center text-primary">
+            <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
           </div>
         </motion.div>
 
+        {/* Net Profit */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 flex justify-between items-center"
+          className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 flex justify-between items-center border-b-4 border-b-success"
         >
           <div>
-            <p className="font-label-md text-label-md text-on-surface-variant mb-2">{t("averageOrderValue")}</p>
-            <h3 className="font-headline-lg text-headline-lg text-on-background">{t("currency")} {avgOrderValue.toFixed(0)}</h3>
-            <p className="font-body-sm text-body-sm text-success mt-2 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">trending_up</span>
-              +5% {t("fromYesterday")}
-            </p>
+            <p className="font-label-md text-label-md text-on-surface-variant mb-2">{t("netProfit")}</p>
+            <h3 className="font-headline-md text-headline-md text-on-background text-success">{t("currency")} {netProfit.toFixed(0)}</h3>
           </div>
-          <div className="w-14 h-14 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary">
-            <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>receipt_long</span>
+          <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center text-success">
+            <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>account_balance_wallet</span>
           </div>
         </motion.div>
 
+        {/* Taxes */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 flex justify-between items-center"
         >
           <div>
-            <p className="font-label-md text-label-md text-on-surface-variant mb-2">{t("newCustomers")}</p>
-            <h3 className="font-headline-lg text-headline-lg text-on-background">{Object.keys(users).length}</h3>
-            <p className="font-body-sm text-body-sm text-success mt-2 flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">trending_up</span>
-              +12% {t("fromYesterday")}
-            </p>
+            <p className="font-label-md text-label-md text-on-surface-variant mb-2">{t("totalTaxes")}</p>
+            <h3 className="font-headline-md text-headline-md text-on-background">{t("currency")} {totalTaxes.toFixed(0)}</h3>
           </div>
-          <div className="w-14 h-14 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary">
-            <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>group</span>
+          <div className="w-12 h-12 rounded-full bg-error-container/30 flex items-center justify-center text-error">
+            <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>account_balance</span>
+          </div>
+        </motion.div>
+
+        {/* Delivery Fees */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 flex justify-between items-center"
+        >
+          <div>
+            <p className="font-label-md text-label-md text-on-surface-variant mb-2">{t("totalDeliveryFees")}</p>
+            <h3 className="font-headline-md text-headline-md text-on-background">{t("currency")} {totalDeliveryFees.toFixed(0)}</h3>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary">
+            <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>local_shipping</span>
           </div>
         </motion.div>
       </div>

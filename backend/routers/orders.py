@@ -15,16 +15,23 @@ def create_order(
     db: Session = Depends(get_db), 
     user: models.User = Depends(get_current_user)
 ):
-    total_amount = 0.0
+    subtotal = 0.0
     for item in order.items:
         product = db.query(models.Product).filter(models.Product.id == item.product_id).first()
         if not product:
             raise HTTPException(status_code=404, detail=f"Product with id {item.product_id} not found")
-        total_amount += product.price * item.quantity
+        subtotal += product.price * item.quantity
+
+    tax_amount = round(subtotal * 0.14, 2)
+    delivery_fee = 3.50
+    total_amount = subtotal + tax_amount + delivery_fee
 
     db_order = models.Order(
         user_id=user.id,
         total_amount=total_amount,
+        subtotal=subtotal,
+        tax_amount=tax_amount,
+        delivery_fee=delivery_fee,
         payment_method=order.payment_method.value,
         shipping_address=order.shipping_address,
         shipping_phone=order.shipping_phone

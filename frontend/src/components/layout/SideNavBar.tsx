@@ -18,7 +18,7 @@ export default function SideNavBar({ isOpen = false, onClose }: { isOpen?: boole
           onClick={onClose}
         />
       )}
-      <nav className={`bg-surface-container-low dark:bg-inverse-surface shadow-md h-screen w-64 fixed left-0 rtl:left-auto rtl:right-0 top-0 flex flex-col border-r rtl:border-r-0 rtl:border-l border-outline-variant dark:border-outline z-50 transform transition-transform duration-300 md:translate-x-0 rtl:md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"}`}>
+      <nav className={`bg-surface-container-low dark:bg-inverse-surface shadow-md h-[100dvh] w-64 fixed left-0 rtl:left-auto rtl:right-0 top-0 flex flex-col border-r rtl:border-r-0 rtl:border-l border-outline-variant dark:border-outline z-50 transform transition-transform duration-300 md:translate-x-0 rtl:md:translate-x-0 ${isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"}`}>
       {/* Header */}
       <div className="p-6 border-b border-outline-variant dark:border-outline">
         <div className="flex items-center gap-4">

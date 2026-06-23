@@ -146,6 +146,11 @@
     "fromYesterday": "from yesterday",
     "justNow": "Just now",
     "orderPlaced": "placed a new order",
+    "viewDetails": "View Details",
+    "grossRevenue": "Gross Revenue",
+    "netProfit": "Net Profit",
+    "totalTaxes": "Total Taxes",
+    "totalDeliveryFees": "Total Delivery Fees",
     "currency": "EGP"
   }
 }

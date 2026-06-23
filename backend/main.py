@@ -21,6 +21,18 @@ def run_migrations(engine):
         if 'driver_phone' not in existing_columns:
             conn.execute(text("ALTER TABLE orders ADD COLUMN driver_phone VARCHAR"))
             conn.commit()
+            
+        if 'subtotal' not in existing_columns:
+            conn.execute(text("ALTER TABLE orders ADD COLUMN subtotal FLOAT DEFAULT 0.0"))
+            conn.commit()
+            
+        if 'tax_amount' not in existing_columns:
+            conn.execute(text("ALTER TABLE orders ADD COLUMN tax_amount FLOAT DEFAULT 0.0"))
+            conn.commit()
+            
+        if 'delivery_fee' not in existing_columns:
+            conn.execute(text("ALTER TABLE orders ADD COLUMN delivery_fee FLOAT DEFAULT 0.0"))
+            conn.commit()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

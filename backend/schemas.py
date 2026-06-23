@@ -85,6 +85,9 @@ class OrderResponse(BaseModel):
     id: int
     user_id: int
     total_amount: float
+    subtotal: Optional[float] = 0.0
+    tax_amount: Optional[float] = 0.0
+    delivery_fee: Optional[float] = 0.0
     status: str
     payment_method: str
     shipping_address: Optional[str] = None

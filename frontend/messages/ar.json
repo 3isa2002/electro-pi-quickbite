@@ -147,6 +147,10 @@
     "justNow": "الآن",
     "orderPlaced": "قام بطلب جديد",
     "viewDetails": "عرض التفاصيل",
+    "grossRevenue": "إجمالي الدخل",
+    "netProfit": "صافي الربح",
+    "totalTaxes": "إجمالي الضرائب",
+    "totalDeliveryFees": "إجمالي رسوم التوصيل",
     "currency": "ج.م"
   }
 }
