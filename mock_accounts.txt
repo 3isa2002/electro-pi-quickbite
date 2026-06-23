@@ -1,0 +1,102 @@
+=== Mock Accounts (Password: pass123) ===
+
+Email: person1@quickbite.com
+Name: Ahmed Mohamed
+Phone: 01239043419
+Address: 29 ش التحرير, الدقي, القاهرة
+
+Email: person2@quickbite.com
+Name: Mahmoud Hassan
+Phone: 01038642390
+Address: 3 ش مكرم عبيد, مدينة نصر, القاهرة
+
+Email: person3@quickbite.com
+Name: Ali Eissa
+Phone: 01167577593
+Address: 37 ش الهرم, الجيزة, القاهرة
+
+Email: person4@quickbite.com
+Name: Omar Tarek
+Phone: 01041179947
+Address: 50 ش فيصل, الجيزة, القاهرة
+
+Email: person5@quickbite.com
+Name: Youssef Ibrahim
+Phone: 01212828187
+Address: 23 ش الهرم, الجيزة, القاهرة
+
+Email: person6@quickbite.com
+Name: Kareem Adel
+Phone: 01533910105
+Address: 80 ش الثورة, مصر الجديدة, القاهرة
+
+Email: person7@quickbite.com
+Name: Mostafa Kamal
+Phone: 01284885794
+Address: 57 ش مكرم عبيد, مدينة نصر, القاهرة
+
+Email: person8@quickbite.com
+Name: Nour El-Din
+Phone: 01568066346
+Address: 86 ش جامعة الدول, المهندسين, القاهرة
+
+Email: person9@quickbite.com
+Name: Hassan Ali
+Phone: 01194990400
+Address: 39 ش التحرير, الدقي, القاهرة
+
+Email: person10@quickbite.com
+Name: Amr Diab
+Phone: 01083659898
+Address: 19 ش عباس العقاد, مدينة نصر, القاهرة
+
+Email: person11@quickbite.com
+Name: Sarah Samir
+Phone: 01578486568
+Address: 69 ش عباس العقاد, مدينة نصر, القاهرة
+
+Email: person12@quickbite.com
+Name: Nora Adel
+Phone: 01147266754
+Address: 97 ش 9, المعادي, القاهرة
+
+Email: person13@quickbite.com
+Name: Maha Youssef
+Phone: 01226450073
+Address: 45 ش الهرم, الجيزة, القاهرة
+
+Email: person14@quickbite.com
+Name: Dina Magdy
+Phone: 01089459770
+Address: 90 ش عباس العقاد, مدينة نصر, القاهرة
+
+Email: person15@quickbite.com
+Name: Menna Allah
+Phone: 01125576202
+Address: 80 ش عباس العقاد, مدينة نصر, القاهرة
+
+Email: person16@quickbite.com
+Name: Mai Ahmed
+Phone: 01097469081
+Address: 46 ش الهرم, الجيزة, القاهرة
+
+Email: person17@quickbite.com
+Name: Salma Hassan
+Phone: 01240307267
+Address: 90 ش جامعة الدول, المهندسين, القاهرة
+
+Email: person18@quickbite.com
+Name: Nadine Tarek
+Phone: 01021829727
+Address: 18 ش جامعة الدول, المهندسين, القاهرة
+
+Email: person19@quickbite.com
+Name: Fatma Ibrahim
+Phone: 01156248604
+Address: 62 ش مكرم عبيد, مدينة نصر, القاهرة
+
+Email: person20@quickbite.com
+Name: Aya Mohamed
+Phone: 01092074038
+Address: 59 ش التحرير, الدقي, القاهرة
+

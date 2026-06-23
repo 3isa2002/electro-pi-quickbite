@@ -32,11 +32,11 @@ class UserLogin(BaseModel):
 class UserResponse(BaseModel):
     id: int
     name: str
-    email: EmailStr
+    email: str
     role: str
-    phone: str
-    address: str
-    
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    created_at: Optional[str] = None  
     model_config = ConfigDict(from_attributes=True)
 
 class Token(BaseModel):
@@ -94,6 +94,7 @@ class OrderResponse(BaseModel):
     shipping_phone: Optional[str] = None
     driver_name: Optional[str] = None
     driver_phone: Optional[str] = None
+    created_at: Optional[str] = None
     items: List[OrderItemResponse]
     
     model_config = ConfigDict(from_attributes=True)

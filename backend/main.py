@@ -34,6 +34,15 @@ def run_migrations(engine):
             conn.execute(text("ALTER TABLE orders ADD COLUMN delivery_fee FLOAT DEFAULT 0.0"))
             conn.commit()
 
+        if 'created_at' not in existing_columns:
+            conn.execute(text("ALTER TABLE orders ADD COLUMN created_at VARCHAR"))
+            conn.commit()
+
+        user_columns = [col['name'] for col in inspector.get_columns('users')]
+        if 'created_at' not in user_columns:
+            conn.execute(text("ALTER TABLE users ADD COLUMN created_at VARCHAR"))
+            conn.commit()
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup event: create tables and seed db

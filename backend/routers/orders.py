@@ -26,6 +26,7 @@ def create_order(
     delivery_fee = 3.50
     total_amount = subtotal + tax_amount + delivery_fee
 
+    from datetime import datetime
     db_order = models.Order(
         user_id=user.id,
         total_amount=total_amount,
@@ -34,7 +35,8 @@ def create_order(
         delivery_fee=delivery_fee,
         payment_method=order.payment_method.value,
         shipping_address=order.shipping_address,
-        shipping_phone=order.shipping_phone
+        shipping_phone=order.shipping_phone,
+        created_at=datetime.utcnow().isoformat()
     )
     db.add(db_order)
     db.commit()

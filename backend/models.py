@@ -23,6 +23,7 @@ class User(Base):
     role = Column(String, default="user")
     phone = Column(String)
     address = Column(String)
+    created_at = Column(String)
 
     orders = relationship("Order", back_populates="user")
 
@@ -54,6 +55,7 @@ class Order(Base):
     shipping_phone = Column(String)
     driver_name = Column(String, nullable=True)
     driver_phone = Column(String, nullable=True)
+    created_at = Column(String)
 
     user = relationship("User", back_populates="orders")
     items = relationship("OrderItem", back_populates="order")

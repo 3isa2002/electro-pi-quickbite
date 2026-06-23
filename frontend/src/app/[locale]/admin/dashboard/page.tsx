@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useEffect, useState } from "react";
 import { getToken } from "@/utils/auth";
 import { useRouter } from "@/i18n/routing";
@@ -44,11 +44,13 @@ const COLORS = ['#897362', '#e67e22', '#2ecc71', '#e74c3c', '#95a5a6'];
 
 export default function AdminDashboardPage() {
   const t = useTranslations("Admin");
+  const locale = useLocale();
   const router = useRouter();
 
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<Record<number, User>>({});
   const [loading, setLoading] = useState(true);
+  const [selectedDateStr, setSelectedDateStr] = useState<string>(new Date().toDateString());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,19 +91,28 @@ export default function AdminDashboardPage() {
     return () => clearInterval(interval);
   }, [router]);
 
+  // Date Range Generation (Last 5 Days)
+  const last5Days = Array.from({length: 5}).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    d.setHours(0,0,0,0);
+    return d;
+  }).reverse();
+
   // Calculations
-  const todayOrders = orders.filter(o => o.status !== "Cancelled");
+  const dateOrders = orders.filter(o => o.created_at && new Date(o.created_at).toDateString() === selectedDateStr);
+  const activeDateOrders = dateOrders.filter(o => o.status !== "Cancelled");
   
-  const grossRevenue = todayOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
+  const grossRevenue = activeDateOrders.reduce((sum, o) => sum + (o.total_amount || 0), 0);
   // Support old orders by treating total_amount as subtotal if subtotal isn't set
-  const netProfit = todayOrders.reduce((sum, o) => sum + (o.subtotal || o.total_amount || 0), 0);
-  const totalTaxes = todayOrders.reduce((sum, o) => sum + (o.tax_amount || 0), 0);
-  const totalDeliveryFees = todayOrders.reduce((sum, o) => sum + (o.delivery_fee || 0), 0);
+  const netProfit = activeDateOrders.reduce((sum, o) => sum + (o.subtotal || o.total_amount || 0), 0);
+  const totalTaxes = activeDateOrders.reduce((sum, o) => sum + (o.tax_amount || 0), 0);
+  const totalDeliveryFees = activeDateOrders.reduce((sum, o) => sum + (o.delivery_fee || 0), 0);
   
-  const avgOrderValue = todayOrders.length > 0 ? (grossRevenue / todayOrders.length) : 0;
+  const avgOrderValue = activeDateOrders.length > 0 ? (grossRevenue / activeDateOrders.length) : 0;
   
   // Status Distribution
-  const statusCounts = orders.reduce((acc, order) => {
+  const statusCounts = dateOrders.reduce((acc, order) => {
     acc[order.status] = (acc[order.status] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
@@ -113,7 +124,7 @@ export default function AdminDashboardPage() {
 
   // Best Sellers
   const productSales: Record<number, { name: string, count: number, revenue: number, image: string }> = {};
-  todayOrders.forEach(order => {
+  activeDateOrders.forEach(order => {
     order.items.forEach(item => {
       if (!productSales[item.product_id]) {
         productSales[item.product_id] = { 
@@ -132,7 +143,7 @@ export default function AdminDashboardPage() {
     .sort((a, b) => b.count - a.count)
     .slice(0, 4);
 
-  // Mock Revenue Data for Line Chart (Blending with real today gross revenue)
+  // Mock Revenue Data for Line Chart (Blending with real selected date revenue)
   const lineData = [
     { name: 'Mon', revenue: 4000 },
     { name: 'Tue', revenue: 3000 },
@@ -140,7 +151,7 @@ export default function AdminDashboardPage() {
     { name: 'Thu', revenue: 4500 },
     { name: 'Fri', revenue: 6000 },
     { name: 'Sat', revenue: 7000 },
-    { name: 'Today', revenue: grossRevenue > 0 ? grossRevenue : 3500 },
+    { name: 'Selected', revenue: grossRevenue > 0 ? grossRevenue : 3500 },
   ];
 
   if (loading) {
@@ -157,6 +168,31 @@ export default function AdminDashboardPage() {
       <div className="mb-8">
         <h1 className="font-headline-xl text-headline-xl text-on-background mb-1">{t("dashboardOverview")}</h1>
         <p className="font-body-md text-body-md text-on-surface-variant">{t("dashboardSubtitle")}</p>
+      </div>
+
+      {/* Calendar Strip */}
+      <div className="flex gap-4 overflow-x-auto pb-4 mb-6 custom-scrollbar" dir="ltr">
+        {last5Days.map(date => {
+          const dateStr = date.toDateString();
+          const isActive = dateStr === selectedDateStr;
+          const hasOrders = orders.some(o => o.created_at && new Date(o.created_at).toDateString() === dateStr);
+          
+          return (
+            <button 
+              key={dateStr}
+              onClick={() => setSelectedDateStr(dateStr)}
+              className={`flex-shrink-0 flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all min-w-[100px] ${isActive ? 'bg-primary border-primary text-on-primary shadow-md' : 'bg-surface-container-lowest border-outline-variant hover:border-primary text-on-surface'}`}
+            >
+              <span className={`font-label-sm text-[11px] uppercase mb-1 ${isActive ? 'text-primary-container' : 'text-on-surface-variant'}`}>
+                {date.toLocaleDateString(locale, { weekday: 'short' })}
+              </span>
+              <span className="font-headline-md text-headline-md font-bold mb-2">
+                {date.getDate()}
+              </span>
+              <div className={`w-2 h-2 rounded-full ${hasOrders ? (isActive ? 'bg-white' : 'bg-success') : 'bg-transparent'}`}></div>
+            </button>
+          )
+        })}
       </div>
 
       {/* KPI Cards */}
@@ -324,7 +360,7 @@ export default function AdminDashboardPage() {
           </div>
           
           <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 rtl:before:ml-0 rtl:before:mr-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-outline-variant before:to-transparent pl-8 rtl:pl-0 rtl:pr-8">
-            {orders.slice(0, 4).map((order, idx) => {
+            {dateOrders.slice(0, 4).map((order, idx) => {
               const user = users[order.user_id];
               const userName = user ? user.name : `User #${order.user_id}`;
               const timeText = idx === 0 ? t("justNow") : `${idx * 15} mins ago`;
