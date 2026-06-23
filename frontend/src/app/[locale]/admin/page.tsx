@@ -342,55 +342,55 @@ export default function AdminDashboard() {
       {/* Driver Selection Modal - Wide & Centered */}
       {driverModal.isOpen && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-on-background/50 backdrop-blur-sm"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
           onClick={() => setDriverModal({ isOpen: false, orderId: null })}
         >
           <div 
-            className="bg-surface-container-lowest w-full max-w-lg rounded-2xl shadow-2xl border border-outline-variant overflow-hidden"
+            className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-outline-variant overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-outline-variant/50 bg-surface">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-200 bg-gray-50">
               <div>
-                <h2 className="font-headline-sm text-headline-sm text-on-surface">اختر سائق التوصيل</h2>
-                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                <h2 className="font-headline-sm text-headline-sm text-gray-900">اختر سائق التوصيل</h2>
+                <p className="font-body-sm text-body-sm text-gray-600 mt-1">
                   طلب رقم <span className="text-primary font-bold">#{driverModal.orderId}</span>
                 </p>
               </div>
               <button
                 onClick={() => setDriverModal({ isOpen: false, orderId: null })}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors"
+                className="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
             </div>
 
             {/* Drivers Grid */}
-            <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white">
               {MOCK_DRIVERS.map((driver, idx) => (
                 <button
                   key={idx}
                   onClick={() => assignDriver(driver)}
-                  className="flex items-center gap-4 p-5 rounded-xl border-2 border-outline-variant/40 hover:border-primary/40 hover:bg-primary/5 active:scale-[0.97] transition-all duration-150 text-start w-full group"
+                  className="flex items-center gap-4 p-5 rounded-xl border-2 border-gray-200 hover:border-primary/50 hover:bg-primary/5 active:scale-[0.97] transition-all duration-150 text-start w-full group"
                 >
                   {/* Avatar */}
-                  <div className="w-14 h-14 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                  <div className="w-14 h-14 rounded-2xl bg-orange-100 text-orange-700 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                     <span className="material-symbols-outlined text-[26px]">two_wheeler</span>
                   </div>
                   {/* Info */}
                   <div className="flex-1 min-w-0">
-                    <p className="font-title-md text-title-md text-on-surface">{driver.name}</p>
-                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-0.5" dir="ltr">{driver.phone}</p>
+                    <p className="font-title-md text-title-md text-gray-900">{driver.name}</p>
+                    <p className="font-body-sm text-body-sm text-gray-600 mt-0.5" dir="ltr">{driver.phone}</p>
                   </div>
                 </button>
               ))}
             </div>
 
             {/* Footer */}
-            <div className="px-5 pb-5">
+            <div className="px-5 pb-5 pt-2 bg-white">
               <button
                 onClick={() => setDriverModal({ isOpen: false, orderId: null })}
-                className="w-full py-3 rounded-xl border border-outline-variant text-on-surface hover:bg-surface-container-low active:scale-[0.98] transition-all font-label-md text-label-md"
+                className="w-full py-3 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-100 active:scale-[0.98] transition-all font-label-md text-label-md"
               >
                 إلغاء
               </button>
