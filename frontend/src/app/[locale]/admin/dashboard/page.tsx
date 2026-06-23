@@ -156,8 +156,44 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="animate-pulse">
+        {/* Header Skeleton */}
+        <div className="mb-8">
+          <div className="h-10 bg-surface-container-highest rounded-lg w-1/4 mb-2"></div>
+          <div className="h-5 bg-surface-container-highest rounded-lg w-1/3"></div>
+        </div>
+
+        {/* Calendar Strip Skeleton */}
+        <div className="flex gap-4 overflow-x-auto pb-4 mb-6 custom-scrollbar" dir="ltr">
+          {[1,2,3,4,5].map(i => (
+            <div key={i} className="flex-shrink-0 w-[100px] h-[100px] bg-surface-container-highest rounded-2xl"></div>
+          ))}
+        </div>
+
+        {/* KPI Cards Skeleton */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+          {[1,2,3,4].map(i => (
+            <div key={i} className="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/30 flex gap-4 items-start h-[100px]">
+              <div className="w-12 h-12 bg-surface-container-highest rounded-xl shrink-0"></div>
+              <div className="flex-1 space-y-3 py-1">
+                <div className="h-4 bg-surface-container-highest rounded-md w-3/4"></div>
+                <div className="h-6 bg-surface-container-highest rounded-md w-1/2"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Charts Skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter mb-8">
+          <div className="lg:col-span-2 bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30">
+            <div className="h-6 bg-surface-container-highest rounded-md w-1/4 mb-6"></div>
+            <div className="h-[300px] bg-surface-container-highest rounded-xl"></div>
+          </div>
+          <div className="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30">
+            <div className="h-6 bg-surface-container-highest rounded-md w-1/2 mb-6"></div>
+            <div className="h-[300px] bg-surface-container-highest rounded-xl"></div>
+          </div>
+        </div>
       </div>
     );
   }
