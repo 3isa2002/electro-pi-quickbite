@@ -8,11 +8,11 @@ import { getToken } from "@/utils/auth";
 import { useRouter, Link } from "@/i18n/routing";
 
 type OrderItem = {
-  id: int;
-  product_id: int;
-  quantity: int;
+  id: number;
+  product_id: number;
+  quantity: number;
   product: {
-    id: int;
+    id: number;
     name_en: string;
     name_ar: string;
     price: number;
@@ -21,8 +21,8 @@ type OrderItem = {
 };
 
 type Order = {
-  id: int;
-  user_id: int;
+  id: number;
+  user_id: number;
   total_amount: number;
   status: string;
   payment_method: string;
