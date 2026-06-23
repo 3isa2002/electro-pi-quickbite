@@ -87,6 +87,15 @@ app.include_router(products.router)
 app.include_router(orders.router)
 app.include_router(orders.admin_router)
 
+@app.get("/seed-history")
+def seed_historical_data():
+    import seed_history
+    try:
+        seed_history.run_seed()
+        return {"status": "success", "message": "Historical data seeded successfully on Render DB!"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 @app.get("/")
 def read_root():
     return {"message": "Welcome to QuickBite API"}
